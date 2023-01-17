@@ -1,0 +1,23 @@
+{
+  "name": "portfolio-backend",
+  "version": "1.0.0",
+  "description": "this is backend for my capstone project, this will allow visitors to reach me, it is a RESTfull API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aimeana100/portifolio-backend.git"
+  },
+  "author": "Anathole K.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Aimeana100/portifolio-backend/issues"
+  },
+  "homepage": "https://github.com/Aimeana100/portifolio-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.8.3"
+  }
+}
