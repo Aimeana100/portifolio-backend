@@ -1,10 +1,10 @@
 import express from 'express';
-import mongoose  from 'mongoose';
 import connectDB from './config/dbConn';
-
+import mongoose from 'mongoose';
 // routers
 import home from './routes/home';
-import categories from './routes/api/categories';
+import categoriesRouter from './routes/api/categories';
+import blogRouter from './routes/api//blogs';
 
 const app = express();
 connectDB();
@@ -14,7 +14,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', home);
-app.use('/categories',categories);
+app.use('/categories',categoriesRouter);
+app.use('/blogs',blogRouter);
 
 // Set `strictQuery` to `false` to prepare for the change
 mongoose.set('strictQuery', false);
