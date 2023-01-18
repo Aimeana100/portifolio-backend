@@ -9,6 +9,7 @@ import contactRouter from './routes/api/contacts';
 import commentRouter from './routes/api/comments';
 import userRouter from './routes/api/users';
 import registerRouter from './routes/register';
+import loginRouter from './routes/login';
 
 const app = express();
 connectDB();
@@ -19,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', home);
 app.use('/register', registerRouter);
+app.use('/auth', loginRouter);
+
 
 app.use('/categories',categoriesRouter);
 app.use('/blogs',blogRouter);

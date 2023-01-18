@@ -9,6 +9,8 @@ var _blogs = _interopRequireDefault(require("./routes/api//blogs"));
 var _contacts = _interopRequireDefault(require("./routes/api/contacts"));
 var _comments = _interopRequireDefault(require("./routes/api/comments"));
 var _users = _interopRequireDefault(require("./routes/api/users"));
+var _register = _interopRequireDefault(require("./routes/register"));
+var _login = _interopRequireDefault(require("./routes/login"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // routers
 
@@ -21,6 +23,8 @@ app.use(_express.default.urlencoded({
   extended: true
 }));
 app.use('/', _home.default);
+app.use('/register', _register.default);
+app.use('/auth', _login.default);
 app.use('/categories', _categories.default);
 app.use('/blogs', _blogs.default);
 app.use('/contacts', _contacts.default);
