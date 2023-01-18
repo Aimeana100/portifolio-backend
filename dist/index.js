@@ -2,18 +2,27 @@
 
 var _express = _interopRequireDefault(require("express"));
 var _mongoose = _interopRequireDefault(require("mongoose"));
-var _bodyParser = _interopRequireDefault(require("body-parser"));
+var _dbConn = _interopRequireDefault(require("./config/dbConn"));
+var _home = _interopRequireDefault(require("./routes/home"));
+var _categories = _interopRequireDefault(require("./routes/api/categories"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+// routers
+
 const app = (0, _express.default)();
-app.use(_bodyParser.default.json());
-app.use(_bodyParser.default.urlencoded({
+(0, _dbConn.default)();
+
+// middleware
+app.use(_express.default.json());
+app.use(_express.default.urlencoded({
   extended: true
 }));
-app.get('/', (req, res, next) => {
-  return res.status(200).json({
-    message: "The app is operating healthly"
-  });
-});
-app.listen(5000, () => {
-  console.log('servver is running on port 5000');
+app.use('/', _home.default);
+app.use('/categories', _categories.default);
+
+// Set `strictQuery` to `false` to prepare for the change
+_mongoose.default.set('strictQuery', false);
+_mongoose.default.connection.once('open', () => {
+  console.log('Connected to MongoDB');
+  const PORT = process.env.port || 5000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });

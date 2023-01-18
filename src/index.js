@@ -1,11 +1,25 @@
 import express from 'express';
 import mongoose  from 'mongoose';
-import bodyParser from 'body-parser';
+import connectDB from './config/dbConn';
+
+// routers
+import home from './routes/home';
+import categories from './routes/api/categories';
+
 const app = express();
+connectDB();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res, next) => { return res.status(200).json({message: "The app is operating healthly"}) })
+app.use('/', home);
+app.use('/categories',categories);
 
-app.listen(5000, ()=> {console.log('servver is running on port 5000');});
+// Set `strictQuery` to `false` to prepare for the change
+mongoose.set('strictQuery', false);
+mongoose.connection.once('open', () => {
+    console.log('Connected to MongoDB');
+    const PORT = process.env.port || 5000
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}); 

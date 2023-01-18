@@ -89,19 +89,18 @@ Add a file structure here with the basic details about files, below is an exampl
 |
 ├── src/
 │   ├── congig/
-│   │   ├── 
-│   │   └── 
-│   ├── controllers/
-│   │   ├──- authController.js
-│   │   │--- BlogsController.js
-|   |   |
-│   │   │   └── 
-│   │   ├── logo_144.png
-│   │   └── Untitled-1.psd
-|   |   
-│   └── javascript
-│       ├── index.js
-│       └── rate.js
+│       ├── 
+│       └── 
+|
+│----controllers/
+│      ├──- authController.js
+│      │--- BlogsController.js
+|      |---
+│      │---
+│      ├──-
+│      └──-
+|      
+│   
 |
 |
 |-----node_modules
