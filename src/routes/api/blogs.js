@@ -1,13 +1,13 @@
 import express from 'express';
 import BlogsController from '../../controllers/BlogsController';
-
+import verfyJWT from '../../middleware/verifyJWT';
 const router = express.Router();
 
 router.route('/')
     .get(BlogsController.getAllBlogs)
-    .post( BlogsController.createNewBlog)
-    .put( BlogsController.updateBlog)
-    .delete( BlogsController.deleteBlog);
+    .post(verfyJWT, BlogsController.createNewBlog)
+    .put(verfyJWT,  BlogsController.updateBlog)
+    .delete(verfyJWT,  BlogsController.deleteBlog);
 
 router.route('/:id')
     .get(BlogsController.getBlog);

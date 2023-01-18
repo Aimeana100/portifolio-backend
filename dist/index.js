@@ -8,6 +8,7 @@ var _categories = _interopRequireDefault(require("./routes/api/categories"));
 var _blogs = _interopRequireDefault(require("./routes/api//blogs"));
 var _contacts = _interopRequireDefault(require("./routes/api/contacts"));
 var _comments = _interopRequireDefault(require("./routes/api/comments"));
+var _users = _interopRequireDefault(require("./routes/api/users"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // routers
 
@@ -24,6 +25,7 @@ app.use('/categories', _categories.default);
 app.use('/blogs', _blogs.default);
 app.use('/contacts', _contacts.default);
 app.use('/comments', _comments.default);
+app.use('/users', _users.default);
 
 // Set `strictQuery` to `false` to prepare for the change
 _mongoose.default.set('strictQuery', false);

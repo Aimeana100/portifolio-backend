@@ -1,14 +1,16 @@
 import express from 'express';
 import ContactsController from '../../controllers/ContactsController';
+import verfyJWT from '../../middleware/verifyJWT';
+
 const router = express.Router();
 
 router.route('/')
-    .get(ContactsController.getAllContacts)
-    .post( ContactsController.createNewContact)
-    .put( ContactsController.updateContact)
-    .delete(ContactsController.deleteContact);
+    .get(verfyJWT, ContactsController.getAllContacts)
+    .post(ContactsController.createNewContact)
+    .put(verfyJWT, ContactsController.updateContact)
+    .delete(verfyJWT, ContactsController.deleteContact);
 
 router.route('/:id')
-    .get(ContactsController.getContact);
+    .get(verfyJWT, ContactsController.getContact);
 
 export default router;

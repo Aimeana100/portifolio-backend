@@ -8,6 +8,7 @@ import blogRouter from './routes/api//blogs';
 import contactRouter from './routes/api/contacts';
 import commentRouter from './routes/api/comments';
 import userRouter from './routes/api/users';
+import registerRouter from './routes/register';
 
 const app = express();
 connectDB();
@@ -17,6 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', home);
+app.use('/register', registerRouter);
+
 app.use('/categories',categoriesRouter);
 app.use('/blogs',blogRouter);
 app.use('/contacts',contactRouter);

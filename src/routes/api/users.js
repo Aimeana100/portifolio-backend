@@ -1,12 +1,14 @@
 import express from 'express';
-const router = express.Router();
+import verfyJWT from '../../middleware/verifyJWT';
 import usersController from '../../controllers/usersController';
 
+const router = express.Router();
+
 router.route('/')
-    .get( usersController.getAllUsers)
-    .delete( usersController.deleteUser);
+    .get(verfyJWT,  usersController.getAllUsers)
+    .delete(verfyJWT, usersController.deleteUser);
 
 router.route('/:id')
-    .get(usersController.getUser);
+    .get(verfyJWT, usersController.getUser);
 
 module.exports = router;
