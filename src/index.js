@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import home from './routes/home';
 import categoriesRouter from './routes/api/categories';
 import blogRouter from './routes/api//blogs';
+import contactRouter from './routes/api/contacts';
 
 const app = express();
 connectDB();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', home);
 app.use('/categories',categoriesRouter);
 app.use('/blogs',blogRouter);
+app.use('/contacts',contactRouter);
 
 // Set `strictQuery` to `false` to prepare for the change
 mongoose.set('strictQuery', false);
