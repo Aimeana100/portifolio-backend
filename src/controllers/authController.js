@@ -24,7 +24,7 @@ const handleLogin = async (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "10m" }
+      { expiresIn: "10s" }
     );
 
     const refreshToken = jwt.sign(
@@ -35,6 +35,7 @@ const handleLogin = async (req, res) => {
     // Saving refreshToken with current user
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
+    
     console.log(result);
     console.log(roles);
 

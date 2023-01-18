@@ -12,4 +12,4 @@ router.route('/')
 router.route('/:id')
     .get(CategoriesController.getCategory);
 
-module.exports = router;
+export default router;

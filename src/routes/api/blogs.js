@@ -1,10 +1,13 @@
 import express from 'express';
 import BlogsController from '../../controllers/BlogsController';
 import verfyJWT from '../../middleware/verifyJWT';
+import  verifyRoles  from '../../middleware/verifyRoles';
+import ROLES_LIST from'../../config/roles_list';
+
 const router = express.Router();
 
 router.route('/')
-    .get(BlogsController.getAllBlogs)
+    .get(verifyRoles(ROLES_LIST.User) , BlogsController.getAllBlogs)
     .post(verfyJWT, BlogsController.createNewBlog)
     .put(verfyJWT,  BlogsController.updateBlog)
     .delete(verfyJWT,  BlogsController.deleteBlog);
@@ -12,4 +15,4 @@ router.route('/')
 router.route('/:id')
     .get(BlogsController.getBlog);
 
-module.exports = router; 
+export default router; 
