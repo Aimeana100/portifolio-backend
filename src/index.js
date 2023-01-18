@@ -7,6 +7,7 @@ import categoriesRouter from './routes/api/categories';
 import blogRouter from './routes/api//blogs';
 import contactRouter from './routes/api/contacts';
 import commentRouter from './routes/api/comments';
+import userRouter from './routes/api/users';
 
 const app = express();
 connectDB();
@@ -20,6 +21,7 @@ app.use('/categories',categoriesRouter);
 app.use('/blogs',blogRouter);
 app.use('/contacts',contactRouter);
 app.use('/comments', commentRouter);
+app.use('/users', userRouter);
 
 
 // Set `strictQuery` to `false` to prepare for the change
