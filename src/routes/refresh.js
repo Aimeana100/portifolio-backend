@@ -1,6 +1,7 @@
 import express from 'express';
-const router = express.Router();
 import refreshTokenController from '../controllers/refreshTokenController';
+
+const router = express.Router();
 
 router.get('/', refreshTokenController.handleRefreshToken);
 

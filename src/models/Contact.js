@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
 
 const contactSchema = new Schema({
   names: {
@@ -12,8 +13,8 @@ const contactSchema = new Schema({
   },
   description: {
     type: String,
-    required : true
-  }
+    required: true,
+  },
 });
 
-export default mongoose.model("Contact", contactSchema);
+export default mongoose.model('Contact', contactSchema);

@@ -1,47 +1,47 @@
-import Blog from "../models/Blog";
-import Category from "../models/Category";
-import cloudinary from "../config/cloudinary";
-import mongoose from "mongoose";
+/* eslint-disable consistent-return */
+import mongoose from 'mongoose';
+import Blog from '../models/Blog';
+import Category from '../models/Category';
+import cloudinary from '../config/cloudinary';
+// import upload from './config/multer';
 
-const {ObjectId} = mongoose.Types;
+const { ObjectId } = mongoose.Types;
 
 const getAllBlogs = async (req, res) => {
   const blogs = await Blog.find();
-  if (!blogs) return res.status(204).json({ message: "No blogs found." });
+  if (!blogs) return res.status(204).json({ message: 'No blogs found.' });
   res.json(blogs);
 };
 
 const createNewBlog = async (req, res) => {
-
   if (
-    !req?.body?.title ||
-    !req?.body?.description ||
-    !req?.file ||
-    !req?.body?.category
+    !req?.body?.title
+    || !req?.body?.description
+    || !req?.file
+    || !req?.body?.category
   ) {
     return res
       .status(400)
-      .json({ message: "Title, Description and Image are required" });
-  } else if(!ObjectId.isValid(req.body.category)){
+      .json({ message: 'Title, Description and Image are required' });
+  } if (!ObjectId.isValid(req.body.category)) {
     return res
-    .status(422)
-    .json({"message" : "Category Id should be a valid mongoose ObjectId"})
-        
+      .status(422)
+      .json({ message: 'Category Id should be a valid mongoose ObjectId' });
   }
-  else {
-    const contact = await Category.findOne({ _id: req.body.category }).exec();
-    if (!contact) {
-      return res
-        .status(204)
-        .json({ message: `No Category matches ID ${req.params.id}.` });
-    }
+
+  const contact = await Category.findOne({ _id: req.body.category }).exec();
+  if (!contact) {
+    return res
+      .status(204)
+      .json({ message: `No Category matches ID ${req.params.id}.` });
   }
+
   try {
     const imgResult = await cloudinary.uploader.upload(req.file.path);
 
     const { title, category, description } = req.body;
 
-    let blog = {
+    const blog = {
       title,
       category,
       description,
@@ -54,14 +54,13 @@ const createNewBlog = async (req, res) => {
     const result = await Blog.create(blog);
     res.status(201).json(result);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: err });
   }
 };
 
 const updateBlog = async (req, res) => {
   if (!req?.body?.id) {
-    return res.status(400).json({ message: "ID parameter is required." });
+    return res.status(400).json({ message: 'ID parameter is required.' });
   }
 
   const blog = await Blog.findOne({ _id: req.body.id }).exec();
@@ -74,10 +73,10 @@ const updateBlog = async (req, res) => {
   if (req.body?.description) blog.description = req.body.description;
   if (req.body?.category) blog.category = req.body.category;
 
+  // eslint-disable-next-line no-undef
   if (req.body?.image) blog.image = uploadFile(req.body.image);
 
-  if (req.body?.status)
-    blog.status = req.body.status == "muted" ? "unmuted" : "muted";
+  if (req.body?.status) { blog.status = req.body.status === 'muted' ? 'unmuted' : 'muted'; }
 
   if (req.file) {
     const imgResult = await cloudinary.uploader.upload(req.file.path);
@@ -91,10 +90,8 @@ const updateBlog = async (req, res) => {
   res.json(result);
 };
 
-
 const deleteBlog = async (req, res) => {
-  if (!req?.body?.id)
-    return res.status(400).json({ message: "Blog ID required." });
+  if (!req?.body?.id) { return res.status(400).json({ message: 'Blog ID required.' }); }
 
   const blog = await Blog.findOne({ _id: req.body.id }).exec();
   if (!blog) {
@@ -107,8 +104,7 @@ const deleteBlog = async (req, res) => {
 };
 
 const getBlog = async (req, res) => {
-  if (!req?.params?.id)
-    return res.status(400).json({ message: "Blog ID required." });
+  if (!req?.params?.id) { return res.status(400).json({ message: 'Blog ID required.' }); }
 
   const blog = await Blog.findOne({ _id: req.params.id }).exec();
   if (!blog) {
@@ -119,7 +115,7 @@ const getBlog = async (req, res) => {
   res.json(blog);
 };
 
-module.exports = {
+export default {
   getAllBlogs,
   createNewBlog,
   updateBlog,

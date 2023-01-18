@@ -1,11 +1,11 @@
 "use strict";
 
 var _express = _interopRequireDefault(require("express"));
-var _dbConn = _interopRequireDefault(require("./config/dbConn"));
 var _mongoose = _interopRequireDefault(require("mongoose"));
+var _dbConn = _interopRequireDefault(require("./config/dbConn"));
 var _home = _interopRequireDefault(require("./routes/home"));
 var _categories = _interopRequireDefault(require("./routes/api/categories"));
-var _blogs = _interopRequireDefault(require("./routes/api//blogs"));
+var _blogs = _interopRequireDefault(require("./routes/api/blogs"));
 var _contacts = _interopRequireDefault(require("./routes/api/contacts"));
 var _comments = _interopRequireDefault(require("./routes/api/comments"));
 var _users = _interopRequireDefault(require("./routes/api/users"));
