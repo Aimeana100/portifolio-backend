@@ -14,6 +14,7 @@ const getAllBlogs = async (req, res) => {
 };
 
 const createNewBlog = async (req, res) => {
+  console.log(req.body)
   if (
     !req?.body?.title
     || !req?.body?.description

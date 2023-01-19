@@ -8,8 +8,9 @@ const categorySchema = new Schema({
     required: true,
   },
   status: {
-    type: Boolean,
+    type: String,
     required: true,
+    default: "unmuted"
   },
 });
 

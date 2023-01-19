@@ -7,7 +7,7 @@ import ROLES_LIST from '../../config/roles_list';
 const router = express.Router();
 
 router.route('/')
-  .get(verifyRoles(ROLES_LIST.User), BlogsController.getAllBlogs)
+  .get(BlogsController.getAllBlogs)
   .post(verfyJWT, BlogsController.createNewBlog)
   .put(verfyJWT, BlogsController.updateBlog)
   .delete(verfyJWT, BlogsController.deleteBlog);

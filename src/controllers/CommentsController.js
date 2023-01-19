@@ -44,7 +44,6 @@ const createNewComment = async (req, res) => {
     return res
     .status(422)
     .json({"message" : "Blog Id should be a valid mongoose ObjectId"})
-        
   }
 
   try {
