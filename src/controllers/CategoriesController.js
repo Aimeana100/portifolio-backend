@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return */
 import Category from '../models/Category';
-
+import mongoose from 'mongoose';
+const {ObjectId} = mongoose.Types;
+ 
 const getAllCategories = async (req, res) => {
   const categories = await Category.find();
   if (!categories) return res.status(204).json({ message: 'No categories found.' });
@@ -20,6 +22,7 @@ const createNewCategory = async (req, res) => {
 
     res.status(201).json(result);
   } catch (err) {
+    res.status(500).json({ message: err.message });
     console.error(err);
   }
 };
@@ -42,16 +45,28 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   if (!req?.body?.id) return res.status(400).json({ message: 'Category ID required.' });
 
+  if (!ObjectId.isValid(req.body.id))  {
+    return res
+      .status(422)
+      .json({ message: 'Category Id should be a valid mongoose ObjectId' });
+  } ;
+
   const category = await Category.findOne({ _id: req.body.id }).exec();
   if (!category) {
     return res.status(204).json({ message: `No category matches ID ${req.body.id}.` });
   }
   const result = await category.deleteOne();
-  res.json(result);
+  res.json(result, {message: 'Category deleted successfully'});
 };
 
 const getCategory = async (req, res) => {
-  if (!req?.params?.id) return res.status(400).json({ message: 'Category ID required.' });
+  if (!req?.params?.id) return res.status(400).json({ message: 'Category ID required.'});
+
+  if (!ObjectId.isValid(req.params.id))  {
+    return res
+      .status(422)
+      .json({ message: 'Category Id should be a valid mongoose ObjectId' });
+  } ;
 
   const category = await Category.findOne({ _id: req.params.id }).exec();
   if (!category) {

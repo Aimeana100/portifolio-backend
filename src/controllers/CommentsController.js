@@ -15,6 +15,11 @@ const getAllComments = async (req, res) => {
 
   let blog_id = req.params.blog_id;
 
+  let blog = await Blog.findById(blog_id);
+  if (!blog) {
+    return res.status(404).json({ message: "Blog with provided ID not found" });
+  }
+
   const comments = await Blog.aggregate([
     {
       $match: { _id: ObjectId(blog_id) }
@@ -24,12 +29,13 @@ const getAllComments = async (req, res) => {
         from: "comments",
         localField: "comments",
         foreignField: "_id",
-        as: "commentList",
+        as: "comments",
       },
     },
   ]);
-  if (!comments) return res.status(204).json({ message: "No comments found." });
-  res.json(comments);
+  console.log(comments)
+  if (comments[0]?.comments.length < 1) return res.status(204).json({ message: "No comments found." });
+  res.status(200).json(comments);
 };
 
 const createNewComment = async (req, res) => {
@@ -56,18 +62,20 @@ const createNewComment = async (req, res) => {
 
     if (result) {
       let blog_id = req.params.blog_id;
-
-      let blogUpdate = await Blog.updateMany(
+       await Blog.updateMany(
         { _id: blog_id },
         { $push: { comments: result._id } }
       );
-
-      console.log(blogUpdate);
     }
+    res.status(201);
 
-    res.status(201).json(result);
+    res.json(result);
+    // res.status(201).json(result, { message: "Comment created successfully"});
+
+    res.json(result, { message: "Comment created successfully" });
+
   } catch (err) {
-    console.error(err);
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -92,6 +100,11 @@ const deleteComment = async (req, res) => {
   if (!req?.body?.id)
     return res.status(400).json({ message: "Comment ID required." });
 
+if(!ObjectId.isValid(req.params.blog_id)){
+    return res
+    .status(422)
+    .json({"message" : "Comment Id should be a valid mongoose ObjectId"})
+  }
   const comment = await Comment.findOne({ _id: req.body.id }).exec();
   if (!comment) {
     return res
@@ -107,7 +120,7 @@ const deleteComment = async (req, res) => {
       { $pull: { comments: result._id } }
     );
   }
-  res.json(result);
+  res.json(result, {message: "Comment deleted successfully"});
 };
 
 const getComment = async (req, res) => {

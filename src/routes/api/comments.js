@@ -3,15 +3,11 @@ import CommentController from '../../controllers/CommentsController';
 
 const router = express.Router();
 
-router.route('/')
-  .put(CommentController.updateComment)
-  .delete(CommentController.deleteComment);
+router.route('/update').put(CommentController.updateComment)
+router.route('/delete').delete(CommentController.deleteComment);
+router.route('/all/:blog_id').get(CommentController.getAllComments)
+router.route('/add/:blog_id').post(CommentController.createNewComment);
 
-router.route('/:blog_id')
-  .get(CommentController.getAllComments)
-  .post(CommentController.createNewComment);
-
-router.route('/:id')
-  .get(CommentController.getComment);
+router.route('/:id').get(CommentController.getComment);
 
 export default router;

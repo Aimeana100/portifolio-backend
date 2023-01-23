@@ -11,7 +11,7 @@ const handleLogin = async (req, res) => {
   }
 
   const foundUser = await User.findOne({ email }).exec();
-  if (!foundUser) return res.sendStatus(401); // Unauthorized
+  if (!foundUser) return res.status(401).json({message : "user not registered"}); // Unauthorized
   // evaluate password
   const match = await bcrypt.compare(password, foundUser.password);
   if (match) {
@@ -48,7 +48,7 @@ const handleLogin = async (req, res) => {
     // Send authorization roles and access token to user
     return res.status(200).json({ roles, accessToken, message: 'Loggin succesfull' });
   }
-  return res.sendStatus(401).json({ message: 'Login failed' });
+  return res.tatus(401).json({ message: 'Login failed' });
 };
 
 export default { handleLogin };

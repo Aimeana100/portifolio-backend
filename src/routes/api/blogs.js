@@ -6,13 +6,11 @@ import ROLES_LIST from '../../config/roles_list';
 
 const router = express.Router();
 
-router.route('/')
-  .get(BlogsController.getAllBlogs)
-  .post(verfyJWT, BlogsController.createNewBlog)
-  .put(verfyJWT, BlogsController.updateBlog)
-  .delete(verfyJWT, BlogsController.deleteBlog);
+router.route('/all').get(BlogsController.getAllBlogs)
+router.route('/add').post(verfyJWT, BlogsController.createNewBlog)
+router.route('/update').put(verfyJWT, BlogsController.updateBlog)
+router.route('/delete').delete(verfyJWT, BlogsController.deleteBlog);
 
-router.route('/:id')
-  .get(BlogsController.getBlog);
+router.route('/:id').get(BlogsController.getBlog);
 
 export default router;

@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import connectDB from './config/dbConn';
+
 // routers
 import home from './routes/home';
 import categoriesRouter from './routes/api/categories';
@@ -12,55 +14,32 @@ import registerRouter from './routes/register';
 import loginRouter from './routes/login';
 import logoutRouter from './routes/logout';
 import upload from './config/multer';
-
-
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from'swagger-ui-express';
-
+import {swaggerDocRouter} from './documentantion';
+import corsOptions from './middleware/corsOptions';
 const app = express();
 connectDB();
+
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
 
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const swaggerObtions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Portifolio API Documentation',
-      version: '1.0.0'
-    },
-  servers: [
-    {
-      url: 'http://127.0.0.1:5000/'
-    }
-  ]
-},
-  apis: ['./index.js']
-};
-
-const swaggerSpec = swaggerJSDoc(swaggerObtions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-/**
- * @swagger
- *  /:
- *   get:
- *    summary: Home
- */
-
 
 app.use('/', home);
-app.use('/register', registerRouter);
-app.use('/auth', loginRouter);
-app.use('/logout', logoutRouter);
 
-app.use('/categories', categoriesRouter);
-app.use('/blogs',upload.single('image'), blogRouter);
-app.use('/contacts', contactRouter);
-app.use('/comments', commentRouter);
-app.use('/users', userRouter);
+app.use('/api/auth/register', registerRouter);
+app.use('/api/auth/login', loginRouter);
+app.use('/api/auth/logout', logoutRouter);
+
+app.use('/api/categories', categoriesRouter);
+app.use('/api/blogs',upload.single('image'), blogRouter);
+app.use('/api/contacts', contactRouter);
+app.use('/api/comments', commentRouter);
+app.use('/api/users', userRouter);
+
+app.use(swaggerDocRouter);
 
 app.all('*', (req, res) => {
   return  res.status(404).json({ "error": "404 Not Found" });

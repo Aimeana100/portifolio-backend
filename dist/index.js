@@ -2,6 +2,7 @@
 
 var _express = _interopRequireDefault(require("express"));
 var _mongoose = _interopRequireDefault(require("mongoose"));
+var _cors = _interopRequireDefault(require("cors"));
 var _dbConn = _interopRequireDefault(require("./config/dbConn"));
 var _home = _interopRequireDefault(require("./routes/home"));
 var _categories = _interopRequireDefault(require("./routes/api/categories"));
@@ -11,51 +12,34 @@ var _comments = _interopRequireDefault(require("./routes/api/comments"));
 var _users = _interopRequireDefault(require("./routes/api/users"));
 var _register = _interopRequireDefault(require("./routes/register"));
 var _login = _interopRequireDefault(require("./routes/login"));
+var _logout = _interopRequireDefault(require("./routes/logout"));
 var _multer = _interopRequireDefault(require("./config/multer"));
-var _swaggerJsdoc = _interopRequireDefault(require("swagger-jsdoc"));
-var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
+var _documentantion = require("./documentantion");
+var _corsOptions = _interopRequireDefault(require("./middleware/corsOptions"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // routers
 
 const app = (0, _express.default)();
 (0, _dbConn.default)();
 
+// Cross Origin Resource Sharing
+app.use((0, _cors.default)(_corsOptions.default));
+
 // middleware
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({
   extended: true
 }));
-const swaggerObtions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Portifolio API Documentation',
-      version: '1.0.0'
-    },
-    servers: [{
-      url: 'http://127.0.0.1:5000/'
-    }]
-  },
-  apis: ['./index.js']
-};
-const swaggerSpec = (0, _swaggerJsdoc.default)(swaggerObtions);
-app.use('/api-docs', _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(swaggerSpec));
-
-/**
- * @swagger
- *  /:
- *   get:
- *    summary: Home
- */
-
 app.use('/', _home.default);
-app.use('/register', _register.default);
-app.use('/auth', _login.default);
-app.use('/categories', _categories.default);
-app.use('/blogs', _multer.default.single('image'), _blogs.default);
-app.use('/contacts', _contacts.default);
-app.use('/comments', _comments.default);
-app.use('/users', _users.default);
+app.use('/api/auth/register', _register.default);
+app.use('/api/auth/login', _login.default);
+app.use('/api/auth/logout', _logout.default);
+app.use('/api/categories', _categories.default);
+app.use('/api/blogs', _multer.default.single('image'), _blogs.default);
+app.use('/api/contacts', _contacts.default);
+app.use('/api/comments', _comments.default);
+app.use('/api/users', _users.default);
+app.use(_documentantion.swaggerDocRouter);
 app.all('*', (req, res) => {
   return res.status(404).json({
     "error": "404 Not Found"

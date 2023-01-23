@@ -3,9 +3,8 @@ import mongoose from 'mongoose';
 import Blog from '../models/Blog';
 import Category from '../models/Category';
 import cloudinary from '../config/cloudinary';
-// import upload from './config/multer';
-
-const { ObjectId } = mongoose.Types;
+import  {validationHelpers} from '../helpers/validate';
+const {ObjectId} = mongoose.Types;
 
 const getAllBlogs = async (req, res) => {
   const blogs = await Blog.find();
@@ -14,7 +13,6 @@ const getAllBlogs = async (req, res) => {
 };
 
 const createNewBlog = async (req, res) => {
-  console.log(req.body)
   if (
     !req?.body?.title
     || !req?.body?.description
@@ -23,12 +21,16 @@ const createNewBlog = async (req, res) => {
   ) {
     return res
       .status(400)
-      .json({ message: 'Title, Description and Image are required' });
-  } if (!ObjectId.isValid(req.body.category)) {
+      .json({ message: 'blog category, Title, Description and Image are required' });
+  } 
+
+  if (!ObjectId.isValid(req.body.category))  {
     return res
       .status(422)
-      .json({ message: 'Category Id should be a valid mongoose ObjectId' });
-  }
+      .json({ message: 'Id should be a valid mongoose ObjectId' });
+  } ;
+
+
 
   const contact = await Category.findOne({ _id: req.body.category }).exec();
   if (!contact) {
@@ -53,7 +55,7 @@ const createNewBlog = async (req, res) => {
     };
 
     const result = await Blog.create(blog);
-    res.status(201).json(result);
+    res.status(201).json(result, { message: 'Blog created successfully' });
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -63,6 +65,13 @@ const updateBlog = async (req, res) => {
   if (!req?.body?.id) {
     return res.status(400).json({ message: 'ID parameter is required.' });
   }
+
+  if (!ObjectId.isValid(req.body.id))  {
+    return res
+      .status(422)
+      .json({ message: 'Id should be a valid mongoose ObjectId' });
+  } ;
+
 
   const blog = await Blog.findOne({ _id: req.body.id }).exec();
   if (!blog) {
@@ -94,6 +103,13 @@ const updateBlog = async (req, res) => {
 const deleteBlog = async (req, res) => {
   if (!req?.body?.id) { return res.status(400).json({ message: 'Blog ID required.' }); }
 
+  if (!ObjectId.isValid(req.body.id))  {
+    return res
+      .status(422)
+      .json({ message: 'Id should be a valid mongoose ObjectId' });
+  } ;
+
+
   const blog = await Blog.findOne({ _id: req.body.id }).exec();
   if (!blog) {
     return res
@@ -107,13 +123,19 @@ const deleteBlog = async (req, res) => {
 const getBlog = async (req, res) => {
   if (!req?.params?.id) { return res.status(400).json({ message: 'Blog ID required.' }); }
 
+  if (!ObjectId.isValid(req.params.id))  {
+    return res
+      .status(422)
+      .json({ message: 'Id should be a valid mongoose ObjectId' });
+  } ;
+
   const blog = await Blog.findOne({ _id: req.params.id }).exec();
   if (!blog) {
     return res
       .status(204)
       .json({ message: `No blog matches ID ${req.params.id}.` });
   }
-  res.json(blog);
+  res.status(200).json(blog, {message : ' successfully '});
 };
 
 export default {

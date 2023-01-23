@@ -3,11 +3,10 @@ import CategoriesController from '../../controllers/CategoriesController';
 import verfyJWT from '../../middleware/verifyJWT';
 
 const router = express.Router();
-router.route('/')
-  .get(CategoriesController.getAllCategories)
-  .post(verfyJWT, CategoriesController.createNewCategory)
-  .put(verfyJWT, CategoriesController.updateCategory)
-  .delete(verfyJWT, CategoriesController.deleteCategory);
+router.route('/all').get(CategoriesController.getAllCategories);
+router.route('/add').post(verfyJWT, CategoriesController.createNewCategory);
+router.route('/update').put(verfyJWT, CategoriesController.updateCategory);
+router.route('/delete').delete(verfyJWT, CategoriesController.deleteCategory);
 
 router.route('/:id')
   .get(CategoriesController.getCategory);
