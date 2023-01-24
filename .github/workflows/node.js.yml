@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - ft-deployment
-      
-  pull_request:
-      - ft-deployment
 
 jobs:
   build:
@@ -21,4 +18,3 @@ jobs:
       run: npm i
     - name: Build
       run: npm  run build
-      CMD: ls
