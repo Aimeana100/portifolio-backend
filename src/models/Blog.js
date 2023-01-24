@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
 const BlogSchema = new Schema({
   title: {
     type: String,
@@ -28,8 +29,8 @@ const BlogSchema = new Schema({
   },
   status: {
     type: String,
-    default: "unmuted"
+    default: 'unmuted',
   },
 });
 
-export default mongoose.model("Blog", BlogSchema);
+export default mongoose.model('Blog', BlogSchema);

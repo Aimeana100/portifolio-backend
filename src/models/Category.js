@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
 
 const categorySchema = new Schema({
   name: {
@@ -7,9 +8,10 @@ const categorySchema = new Schema({
     required: true,
   },
   status: {
-    type: Boolean,
+    type: String,
     required: true,
+    default: "unmuted"
   },
 });
 
-module.exports = mongoose.model("Category", categorySchema);
+export default mongoose.model('Category', categorySchema);

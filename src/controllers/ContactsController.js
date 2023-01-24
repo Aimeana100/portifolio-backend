@@ -1,9 +1,12 @@
+import mongoose from 'mongoose';
 import Contact  from '../models/Contact';
+
+const {ObjectId} = mongoose.Types;
 
 const getAllContacts = async (req, res) => {
     const contacts = await Contact.find();
     if (!contacts) return res.status(204).json({ 'message': 'No contacts found.' });
-    res.json(contacts);
+    res.status(200).json(contacts);
 }
 
 const createNewContact = async (req, res) => {
@@ -38,18 +41,25 @@ const updateContact = async (req, res) => {
     if (req.body?.email) contact.email = req.body.email;
     if (req.body?.description) contact.description = req.body.description;
     const result = await contact.save();
-    res.json(result);
+    res.json(result, { "message": "Updated successfully" });
 }
 
 const deleteContact = async (req, res) => {
     if (!req?.body?.id) return res.status(400).json({ 'message': 'Contact ID required.' });
+
+
+  if (!ObjectId.isValid(req.body.id))  {
+    return res
+      .status(422)
+      .json({ message: 'Id should be a valid mongoose ObjectId' });
+  } ;
 
     const contact = await Contact.findOne({ _id: req.body.id }).exec();
     if (!contact) {
         return res.status(204).json({ "message": `No contact matches ID ${req.body.id}.` });
     }
     const result = await contact.deleteOne(); 
-    res.json(result);
+    res.json(result,{ "message": "deleted successfully" });
 }
 
 const getContact = async (req, res) => {
