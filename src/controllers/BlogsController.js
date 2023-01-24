@@ -3,13 +3,12 @@ import mongoose from 'mongoose';
 import Blog from '../models/Blog';
 import Category from '../models/Category';
 import cloudinary from '../config/cloudinary';
-import  {validationHelpers} from '../helpers/validate';
 const {ObjectId} = mongoose.Types;
 
 const getAllBlogs = async (req, res) => {
   const blogs = await Blog.find();
   if (!blogs) return res.status(204).json({ message: 'No blogs found.' });
-  res.json(blogs);
+  res.status(200).json(blogs);
 };
 
 const createNewBlog = async (req, res) => {

@@ -26,7 +26,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use('/', home);
 
 app.use('/api/auth/register', registerRouter);
@@ -52,3 +51,5 @@ mongoose.connection.once('open', () => {
   const PORT = process.env.port || 5000;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
+
+export default app;

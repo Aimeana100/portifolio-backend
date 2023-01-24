@@ -1,5 +1,9 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 var _express = _interopRequireDefault(require("express"));
 var _mongoose = _interopRequireDefault(require("mongoose"));
 var _cors = _interopRequireDefault(require("cors"));
@@ -53,3 +57,5 @@ _mongoose.default.connection.once('open', () => {
   const PORT = process.env.port || 5000;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
+var _default = app;
+exports.default = _default;
