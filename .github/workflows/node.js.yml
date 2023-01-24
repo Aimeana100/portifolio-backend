@@ -1,8 +1,8 @@
 name: node.js CI
 on:
-  push:
-    branches: [ ft-deployment ]
-  pull_request: [ ft-deployment ]
+   push:
+     branches: [ ft-deployment ]
+   pull_request: [ ft-deployment ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,6 +14,6 @@ jobs:
       node-servions: ${{ matrix.node-version }}
   -run: |
       npm install
-      
+
 
 
