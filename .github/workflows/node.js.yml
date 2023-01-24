@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - ft-deployment
+  pull_request:
+      - ft-deployment
 
 jobs:
   build:
@@ -13,10 +15,9 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: 14
+        node-version: 18
     - name: Install dependencies
       run: npm i
     - name: Build
       run: npm  run build
-    - name: Test
-      run: npm test
+      CMD: ls

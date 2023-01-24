@@ -2,7 +2,7 @@
   "name": "portfolio-backend",
   "version": "1.0.0",
   "description": "this is backend for my capstone project, this will allow visitors to reach me, it is a RESTfull API",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "babel src/index.js -d dist",
     "start": "npm run build && node --exec babel-node src/index.js",
