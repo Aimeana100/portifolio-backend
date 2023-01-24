@@ -1,0 +1,19 @@
+name: node.js CI
+on:
+  push:
+    branches: [ ft-deployment ]
+  pull_request: [ ft-deployment ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  steps:
+  - uses: actions/checkout@v2
+  - name: Use Nade.js ${{ matrix.node.version }}
+    uses: actions/setup-node@v1
+    with:
+      node-servions: ${{ matrix.node-version }}
+  -run: |
+      npm install
+      
+
+
