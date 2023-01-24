@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - ft-deployment
+      
   pull_request:
       - ft-deployment
 
