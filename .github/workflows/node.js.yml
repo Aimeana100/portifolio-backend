@@ -1,9 +1,9 @@
 name: CI/CD
 
 on:
-  push:
+  pull_request:
     branches:
-      - ft-deployment
+      - main
 
 jobs:
   build:
@@ -17,6 +17,8 @@ jobs:
         cashe: 'npm'
     - name: Install dependencies
       run: npm ci
+    - name: Update NPM
+      run: npm install -g npm@9.3.1
     - name: Build
       run: npm run build
     - name: Test
