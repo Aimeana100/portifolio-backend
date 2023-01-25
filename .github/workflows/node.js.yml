@@ -20,6 +20,6 @@ jobs:
     - name: Update NPM
       run: npm install -g npm@9.3.1
     - name: Build
-      run: npm run build
+      run: npm start
     - name: Test
       run: npm run test
