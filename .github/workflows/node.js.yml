@@ -18,8 +18,10 @@ jobs:
       with:
         node-version: 18.x
         cashe: 'npm'
-    - name: Install dependencies
-      run: npm ci
+    - name: Install dependencies and make test-coverage
+      run: | 
+        npm ci
+        make test-coverage
     - name: Build
       run: npm start
     - name: Test

@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import connectDB from './config/dbConn';
+import dotenv from 'dotenv'
 
 // routers
 import home from './routes/home';
@@ -16,6 +17,7 @@ import logoutRouter from './routes/logout';
 import upload from './config/multer';
 import {swaggerDocRouter} from './documentantion';
 import corsOptions from './middleware/corsOptions';
+
 const app = express();
 connectDB();
 
@@ -45,7 +47,6 @@ app.all('*', (req, res) => {
 });
 
 // Set `strictQuery` to `false` to prepare for the change
-mongoose.set('strictQuery', false);
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
   const PORT = process.env.port || 5000;

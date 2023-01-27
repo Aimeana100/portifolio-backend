@@ -20,7 +20,7 @@ const handleNewUser = async (req, res) => {
       password: hashedPwd,
       role: 'user',
     });
-    res.status(201).json({ success: `New user with email ${email} created!` });
+    res.status(201).json({ result, success: `New user with email ${email} created!` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
