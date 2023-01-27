@@ -22,7 +22,7 @@ const app = express();
 connectDB();
 
 // Cross Origin Resource Sharing
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // middleware
 app.use(express.json());
