@@ -48,7 +48,7 @@ const handleLogin = async (req, res) => {
     // Send authorization roles and access token to user
     return res.status(200).json({ roles, accessToken, message: 'Loggin succesfull' });
   }
-  return res.tatus(401).json({ message: 'Login failed' });
+  return res.status(401).json({ message: 'Login failed' });
 };
 
 export default { handleLogin };
