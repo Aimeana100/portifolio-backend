@@ -70,10 +70,6 @@ export default  {
       type: "object",
   
       properties: {
-          id: {
-            type: "string",
-            description: "The auto-generated id of the blog",
-          },
           category: {
             type:  "string",
             description: "blog category id",
@@ -91,16 +87,6 @@ export default  {
           type: "string",
           description: "blog image",
           format: "binary",
-        },
-        comments: {
-          type: "array",
-          items: {
-            type: "object",
-        }
-      },
-        status: {
-          type: "string",
-          description: "muted or muted status",
         },
       },
     }

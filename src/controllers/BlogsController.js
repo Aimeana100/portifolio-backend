@@ -54,7 +54,7 @@ const createNewBlog = async (req, res) => {
     };
 
     const result = await Blog.create(blog);
-    res.status(201).json(result, { message: 'Blog created successfully' });
+    res.status(201).json({result,  message: 'Blog created successfully' });
   } catch (err) {
     res.status(500).json({ message: err });
   }
