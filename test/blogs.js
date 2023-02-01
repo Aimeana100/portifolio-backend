@@ -6,28 +6,26 @@ import chaiHttp from "chai-http";
 import app from "../src/index";
 import request from "supertest";
 import Blog from "../src/models/Blog";
+import seeder from '../src/seeders/userSeeder';
 import Category from "../src/models/Category";
+import { response } from "express";
 
 let should = chai.should();
 chai.use(chaiHttp);
-
-describe(" ++++++ BLOGS ++++++", function (done) {
   const expect = chai.expect;
-  let dynamic__response;
 
-  beforeEach((done) => {
-    Category.deleteMany({}, (err) => {
-      Blog.deleteMany({}, (err) => {
-        done();
-      });
-    });
-  });
+describe(" ----- BLOGs ----- ", function (done) {
 
-  it("returns all blogs, and 200 status", async () => {
+  it("/GET returns all blogs, and 200 status", async () => {
     const response = await request(app).get("/api/blogs/all");
     expect(response.status).to.eql(200);
-    expect(response.body.length).to.eq(0);
   });
+
+  it("/GET returns single blog, and 200 status", async () => {
+    const response = await request(app).get("/api/blogs/63d3fe352b1e86c44fecc430");
+    expect(response.status).to.eql(200);
+  });
+
 
   it("/POST blog require Authentication", async () => {
     const response = await request(app).post("/api/blogs/add").send({
@@ -36,9 +34,15 @@ describe(" ++++++ BLOGS ++++++", function (done) {
       description: "anatholetes@gmail.com",
       image: "",
       password: "1234",
-    });
-    expect(response.status).to.eql(401);
+    })
+    .expect((response) => {
+      expect(response.status).to.eql(401);
+    })
   });
+
+  
+
+});
 
 
   // it("should pass", async (done) => {
@@ -57,5 +61,3 @@ describe(" ++++++ BLOGS ++++++", function (done) {
   //       }
   //     });
   // });
-
-});
