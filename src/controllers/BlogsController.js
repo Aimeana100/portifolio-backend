@@ -126,7 +126,7 @@ const getBlog = async (req, res) => {
     return res
       .status(422)
       .json({ message: 'Id should be a valid mongoose ObjectId' });
-  } ;
+  };
 
   const blog = await Blog.findOne({ _id: req.params.id }).exec();
   if (!blog) {
@@ -134,7 +134,7 @@ const getBlog = async (req, res) => {
       .status(204)
       .json({ message: `No blog matches ID ${req.params.id}.` });
   }
-  res.status(200).json(blog, {message : ' successfully '});
+  res.status(200).json({ 'blog' : blog, message : 'successfully '});
 };
 
 export default {

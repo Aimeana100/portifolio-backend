@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.route('/all').get(verfyJWT, ContactsController.getAllContacts)
 router.route('/add').post(ContactsController.createNewContact)
-router.route('/').put(verfyJWT, ContactsController.updateContact)
 router.route('/delete').delete(verfyJWT, ContactsController.deleteContact);
 
 router.route('/:id')

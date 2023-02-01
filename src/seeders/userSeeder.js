@@ -1,48 +1,35 @@
 const userSeeder = {
-  adminUser: {
-    userId: 1,
-    fullName: "Zeno of Citium",
-    username: "zeno123",
-    password: "123456",
-    email: "zeno123@gmail.com",
-    isAdmin: true,
-    passwordConfirm: "123456",
-  },
-  nonAdminUser: {
-    userId: 4,
-    fullName: "Epitetus",
-    username: "epitetus123",
-    password: "abcdef",
-    email: "epitetus@gmail.com",
-    isAdmin: false,
-    passwordConfirm: "abcdef",
-  },
+
+
   signUp: {
     names: "Anathole K",
     password: "1234",
-    email: "aimeanathole@gmail.com",
+    email: "test@gmail.com",
     roles: "user",
   },
 
   signUp2: {
     names: "Anathole-2 K",
     password: "1234",
-    email: "aimeanathole2@gmail.com",
+    email: "test2@gmail.com",
     roles: "user",
   },
 
-  login: {
-    email: "aimeanathole@gmail.com",
+  loginNotRegistred: {
+    email: "anonymos@gmail.com",
     password: "1234",
   },
-
+  loginRegistered: {
+    email: "test@gmail.com",
+    password: "1234",
+  },
   invalidLoginDetails: {
     email: "aimeanathole@gmail.com",
     password: "12345678",
   },
 
   missingPassword: {
-    username: "aimeanathole@gmail.com",
+    email: "aimeanathole@gmail.com",
   },
 
   existingUsername: {
