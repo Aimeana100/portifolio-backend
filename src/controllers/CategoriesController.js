@@ -14,17 +14,14 @@ const createNewCategory = async (req, res) => {
     return res.status(400).json({ message: ' category name is required' });
   }
 
-  try {
+  
     const result = await Category.create({
       name: req.body.name,
       status: req.body.status,
     });
 
-    res.status(201).json(result);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.error(err);
-  }
+    res.status(201).json({result, message: 'Category created successfully'});
+
 };
 
 const updateCategory = async (req, res) => {
@@ -39,7 +36,7 @@ const updateCategory = async (req, res) => {
   if (req.body?.name) category.name = req.body.name;
   if (req.body?.status) category.status = req.body.status;
   const result = await category.save();
-  res.json(result);
+  res.status(200).json(result);
 };
 
 const deleteCategory = async (req, res) => {

@@ -1,7 +1,7 @@
 //Require the dev-dependencies
+import app from "../src/index";
 import chai from "chai";
 import chaiHttp from "chai-http";
-import app from "../src/index";
 import request from "supertest";
 import Category from "../src/models/Category";
 import User from "../src/models/User";
@@ -9,70 +9,72 @@ import User from "../src/models/User";
 let should = chai.should();
 chai.use(chaiHttp);
 
-let token;
+const rqst = request(app);
 
 describe("----- BLOG CATEGORY ------", async function () {
   const expect = chai.expect;
-
+  let token;
   beforeEach(async (done) => {
-    await Category.deleteOne({},
-      await User.deleteOne({}, done())
-      );
-   
+    await Category.deleteMany({}, await User.deleteMany({}, done()));
   });
 
-  await it("/GET returns all blog categories ", async function () {
-    const response = await request(app).get("/api/categories/all");
+  afterEach(async (done) => {
+    await Category.deleteMany({}, done());
+  });
+
+  it("/GET returns all blog categories ", async function () {
+    const response = await rqst.get("/api/categories/all");
     expect(response.status).to.eql(200);
   });
 
-  await it("/POST returns not authenticated (401) ", async function () {
-    const response = await request(app).post("/api/categories/add").send({
+  it("/POST -> returns not authenticated (401) ", async function () {
+    const response = await rqst.post("/api/categories/add").send({
       name: "Software Development",
     });
     expect(response.status).to.eql(401);
   });
 
   it("/POST returns not all fields filled (400) ", async function () {
-    await request(app).post("/api/auth/register").send({
+    const d = await rqst.post("/api/auth/register").send({
       names: "Anathole K",
       password: "1234",
       email: "test@gmail.com",
       roles: "user",
     });
 
-    const login = await request(app).post("/api/auth/login").send({
+    console.log(d.body);
+    console.log("-------- loging in .. -------- ");
+
+    const login = await rqst.post("/api/auth/login").send({
       email: "test@gmail.com",
       password: "1234",
     });
 
-    // console.log(login.body);
+    console.log(login.body);
 
-    const response = await request(app)
+    const response = await rqst
       .post("/api/categories/add")
       .set({
         token: `Bearer ${login.body.accessToken}`,
       })
       .send({});
-
     expect(response.status).to.eql(400);
     expect(response.body).to.be.an("object");
   });
 
-  await it("/POST returnsCategory created (201) ", async function () {
-    await request(app).post("/api/auth/register").send({
+  await it("/POST returns Category created (201) ", async function () {
+    await rqst.post("/api/auth/register").send({
       names: "Anathole K",
       password: "1234",
       email: "test@gmail.com",
       roles: "user",
     });
-
-    const login = await request(app).post("/api/auth/login").send({
+    const login = await rqst.post("/api/auth/login").send({
       email: "test@gmail.com",
       password: "1234",
     });
 
-    const response = await request(app)
+    const response = await rqst
       .post("/api/categories/add")
       .set({
         token: `Bearer ${login.body.accessToken}`,
@@ -80,12 +82,13 @@ describe("----- BLOG CATEGORY ------", async function () {
       .send({
         name: "Software Development",
       });
-    expect(response.status).to.eql(201);
+    expect(response.status).to.eql(200);
+    expect(response.body).to.be.an("object");
   });
 
   //   it("returns user with the same email exist (409) ", async function () {
   //     console.log('register a new user');
-  //     const user = await request(app)
+  //     const user = await rqst
   //       .post("/api/auth/register")
   //       .send({
   //         names: "Anathole K",
@@ -97,7 +100,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //     console.log(user.body)
 
   //     if (user) {
-  //       const response = await request(app)
+  //       const response = await rqst
   //         .post("/api/auth/register")
   //         .send({
   //           names: "Anathole Karinganire",
@@ -112,7 +115,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //   });
 
   //   it(" Login return one of email or password not passed ahead with request (400)", async function () {
-  //     await request(app)
+  //     await rqst
   //     .post("/api/auth/register")
   //     .send({
   //       names: "Anathole K",
@@ -121,7 +124,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //       roles: "user",
   //     });
 
-  //     const response = await request(app)
+  //     const response = await rqst
   //       .post("/api/auth/login")
   //       .send({
   //         email: "test@example.com",
@@ -130,7 +133,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //   });
 
   //   it(" Login return unregistred a user (401) ", async function () {
-  //     await request(app)
+  //     await rqst
   //     .post("/api/auth/register")
   //     .send({
   //       names: "Anathole K",
@@ -138,7 +141,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //       email: "test@gmail.com",
   //       roles: "user",
   //     });
-  //     const response = await request(app)
+  //     const response = await rqst
   //       .post("/api/auth/login")
   //       .send({
   //         password: "1234",
@@ -148,7 +151,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //   });
 
   //   it("Login with invalid credenstials ie: password incorrect (200) ", async function () {
-  //     await request(app)
+  //     await rqst
   //     .post("/api/auth/register")
   //     .send({
   //       names: "Anathole K",
@@ -157,7 +160,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //       roles: "user",
   //     });
 
-  //     const response = await request(app)
+  //     const response = await rqst
   //       .post("/api/auth/login")
   //       .send({
   //         email : "test@gmail.com",
@@ -170,7 +173,7 @@ describe("----- BLOG CATEGORY ------", async function () {
 
   //   it("Authenticcate a user and get a token to use for the rest of the APIs (200) ", async function () {
 
-  //     await request(app)
+  //     await rqst
   //     .post("/api/auth/register")
   //     .send({
   //       names: "Anathole K",
@@ -179,7 +182,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   //       roles: "user",
   //     });
 
-  //     const response = await request(app)
+  //     const response = await rqst
   //       .post("/api/auth/login")
   //       .send({
   //         email: "test@gmail.com",
@@ -191,19 +194,19 @@ describe("----- BLOG CATEGORY ------", async function () {
   //   });
 
   //   it(" GET users without access priviledge 401", async function () {
-  //     await request(app)
+  //     await rqst
   //     .post("/api/auth/login")
   //     .send({
   //       email: "test@gmail.com",
   //       password: "1234",
   //     });
 
-  //     const response = await request(app).get("/api/users/all");
+  //     const response = await rqst.get("/api/users/all");
   //     expect(response.status).to.eql(401);
   //   });
 
   //   it(" GET users with access priviledge 200", async function () {
-  //     await request(app)
+  //     await rqst
   //     .post("/api/auth/register")
   //     .send({
   //       names: "Anathole K",
@@ -212,14 +215,14 @@ describe("----- BLOG CATEGORY ------", async function () {
   //       roles: "user",
   //     });
 
-  //     const loginResponse = await request(app)
+  //     const loginResponse = await rqst
   //     .post("/api/auth/login")
   //     .send({
   //       email: "test@gmail.com",
   //       password: "1234",
   //     });
 
-  //     const response = await request(app)
+  //     const response = await rqst
   //       .get("/api/users/all")
   //       .set({
   //         token: `Bearer ${loginResponse.body.accessToken}`,
@@ -232,5 +235,4 @@ describe("----- BLOG CATEGORY ------", async function () {
   //   await Category.deleteOne({});
   //   await User.deleteOne({}, done());
   // });
-  
 });

@@ -38,7 +38,7 @@ const createNewBlog = async (req, res) => {
       .json({ message: `No Category matches ID ${req.params.id}.` });
   }
 
-  try {
+
     const imgResult = await cloudinary.uploader.upload(req.file.path);
 
     const { title, category, description } = req.body;
@@ -55,9 +55,7 @@ const createNewBlog = async (req, res) => {
 
     const result = await Blog.create(blog);
     res.status(201).json({result,  message: 'Blog created successfully' });
-  } catch (err) {
-    res.status(500).json({ message: err });
-  }
+
 };
 
 const updateBlog = async (req, res) => {

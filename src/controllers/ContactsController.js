@@ -13,7 +13,7 @@ const createNewContact = async (req, res) => {
         return res.status(400).json({ 'message': 'Query names, email, and message are required' });
     }
 
-    try {
+   
         const result = await Contact.create({
             names: req.body.names,
             email: req.body.email,
@@ -21,9 +21,7 @@ const createNewContact = async (req, res) => {
         });
 
         res.status(201).json({result, message: 'Contact created successfully.'});
-    } catch (err) {
-        res.status(500).json({'message' :` ${err}`})
-    }
+ 
 }
 
 const deleteContact = async (req, res) => {

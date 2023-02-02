@@ -1,16 +1,15 @@
-
 import Comment from "../models/Comment";
 import Blog from "../models/Blog";
 import mongoose from "mongoose";
-const {ObjectId} = mongoose.Types; 
+const { ObjectId } = mongoose.Types;
 
 const getAllComments = async (req, res) => {
   if (!req?.params?.blog_id) {
     return res.status(400).json({ message: " No blog specified" });
-  }else if(!ObjectId.isValid(req.params.blog_id)){
+  } else if (!ObjectId.isValid(req.params.blog_id)) {
     return res
-    .status(422)
-    .json({"message" : "Blog Id should be a valid mongoose ObjectId"})
+      .status(422)
+      .json({ message: "Blog Id should be a valid mongoose ObjectId" });
   }
 
   let blog_id = req.params.blog_id;
@@ -22,7 +21,7 @@ const getAllComments = async (req, res) => {
 
   const comments = await Blog.aggregate([
     {
-      $match: { _id: ObjectId(blog_id) }
+      $match: { _id: ObjectId(blog_id) },
     },
     {
       $lookup: {
@@ -33,8 +32,9 @@ const getAllComments = async (req, res) => {
       },
     },
   ]);
-  console.log(comments)
-  if (comments[0]?.comments.length < 1) return res.status(204).json({ message: "No comments found." });
+  console.log(comments);
+  if (comments[0]?.comments.length < 1)
+    return res.status(204).json({ message: "No comments found." });
   res.status(200).json(comments);
 };
 
@@ -46,13 +46,12 @@ const createNewComment = async (req, res) => {
   }
   if (!req?.params?.blog_id) {
     return res.status(400).json({ message: " No blog specified" });
-  } else if(!ObjectId.isValid(req.params.blog_id)){
+  } else if (!ObjectId.isValid(req.params.blog_id)) {
     return res
-    .status(422)
-    .json({"message" : "Blog Id should be a valid mongoose ObjectId"})
+      .status(422)
+      .json({ message: "Blog Id should be a valid mongoose ObjectId" });
   }
 
-  try {
     const result = await Comment.create({
       names: req.body.names,
       email: req.body.email,
@@ -62,7 +61,7 @@ const createNewComment = async (req, res) => {
 
     if (result) {
       let blog_id = req.params.blog_id;
-       await Blog.updateMany(
+      await Blog.updateMany(
         { _id: blog_id },
         { $push: { comments: result._id } }
       );
@@ -70,13 +69,8 @@ const createNewComment = async (req, res) => {
     res.status(201);
 
     res.json(result);
-    // res.status(201).json(result, { message: "Comment created successfully"});
-
-    res.json(result, { message: "Comment created successfully" });
-
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
+    res.status(201).json(result, { message: "Comment added successfully"});
+ 
 };
 
 const updateComment = async (req, res) => {
@@ -100,10 +94,10 @@ const deleteComment = async (req, res) => {
   if (!req?.body?.id)
     return res.status(400).json({ message: "Comment ID required." });
 
-if(!ObjectId.isValid(req.params.blog_id)){
+  if (!ObjectId.isValid(req.params.blog_id)) {
     return res
-    .status(422)
-    .json({"message" : "Comment Id should be a valid mongoose ObjectId"})
+      .status(422)
+      .json({ message: "Comment Id should be a valid mongoose ObjectId" });
   }
   const comment = await Comment.findOne({ _id: req.body.id }).exec();
   if (!comment) {
@@ -115,12 +109,12 @@ if(!ObjectId.isValid(req.params.blog_id)){
 
   if (result) {
     let blog_id = req.params.blog_id;
-     await Blog.updateMany(
+    await Blog.updateMany(
       { _id: blog_id },
       { $pull: { comments: result._id } }
     );
   }
-  res.json(result, {message: "Comment deleted successfully"});
+  res.json(result, { message: "Comment deleted successfully" });
 };
 
 const getComment = async (req, res) => {
