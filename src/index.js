@@ -18,7 +18,7 @@ import upload from './config/multer';
 import {swaggerDocRouter} from './documentantion';
 import corsOptions from './middleware/corsOptions';
 
-let { NODE_ENV } = process.env;
+const { NODE_ENV } = process.env;
 
 const app = express();
 dotenv.config();
