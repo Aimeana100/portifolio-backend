@@ -18,7 +18,7 @@ import upload from './config/multer';
 import {swaggerDocRouter} from './documentantion';
 import corsOptions from './middleware/corsOptions';
 
-let { NODE_ENV } = process.env;
+const { NODE_ENV } = process.env;
 
 const app = express();
 dotenv.config();
@@ -53,7 +53,7 @@ app.all('*', (req, res) => {
 // Set `strictQuery` to `false` to prepare for the change
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
-  let PORT = NODE_ENV='test' ? 4000 :  process.env.port || 5000;
+  let PORT = NODE_ENV==='test' ? 4000 :  process.env.port || 5000;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
 

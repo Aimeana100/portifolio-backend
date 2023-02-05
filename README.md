@@ -2,14 +2,9 @@
 <!-- PROJECT LOGO and Intro -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://res.cloudinary.com/dzo0qlxfd/image/upload/v1673948488/IMG_20230108_100520_792_gnatzw.jpg" alt="Logo" width="250" height="220">
-  </a>
-
-  <h3 align="center"> Anathole's Portifolio backend REST API </h3>
+  <h3 align="center"> # Anathole's Portifolio backend REST API </h3>
   <br>
   ![check-code-coverage](https://img.shields.io/badge/code--coverage-80%-brightgreen)
-
 </div>
 
 
