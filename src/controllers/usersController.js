@@ -31,7 +31,7 @@ const getUser = async (req, res) => {
   
   const user = await User.findOne({ _id: req.params.id }).exec();
   if (!user) {
-    return res.status(404).json({ message: `User with id : ${req.params.id} does not exist` });
+    return res.status(204).json({ message: `User with id : ${req.params.id} does not exist` });
   }
   res.status(200).json(user);
 };

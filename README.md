@@ -7,6 +7,9 @@
   </a>
 
   <h3 align="center"> Anathole's Portifolio backend REST API </h3>
+  <br>
+  ![check-code-coverage](https://img.shields.io/badge/code--coverage-80%-brightgreen)
+
 </div>
 
 
@@ -74,44 +77,6 @@ List all the pre-requisites the system needs to develop this project.
 
 ### Development Environment
 - Follow the instructions listed above for installation.
-
-
-### File Structure
-Add a file structure here with the basic details about files, below is an example.
-
-```
-.
-|---dist
-|   |
-|   |__index.js
-|
-|
-|
-├── src/
-│   ├── congig/
-│       ├── 
-│       └── 
-|
-│----controllers/
-│      ├──- authController.js
-│      │--- BlogsController.js
-|      |---
-│      │---
-│      ├──-
-│      └──-
-|      
-│   
-|
-|
-|-----node_modules
-|
-├── .babelrc
-├── .env.example.html
-├── .ignaore
-|
-└── README.md
-```
-
 
 ### Build
 ##### Build is automatic when `npm start` is called.

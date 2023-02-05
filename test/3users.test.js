@@ -1,3 +1,5 @@
+process.env.NODE_ENV = "test";
+
 //Require the dev-dependencies
 import chai from "chai";
 import chaiHttp from "chai-http";
@@ -9,10 +11,9 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 let token;
-  const expect = chai.expect;
+const expect = chai.expect;
 
 describe("----- USER LOGIN and REGISTER ------", async function () {
-
   beforeEach(async (done) => {
     await User.deleteMany({}, done());
   });
@@ -40,18 +41,14 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
   });
 
   it("returns user with the same email exist (409) ", async function () {
-    console.log("register a new user");
-    const user = await request(app).post("/api/auth/register").send(
-      {
-        names: "Anathole K",
-        password: "1234",
-        email: "test@gmail.com",
-        roles: "user",
-      },
-      console.log("created")
-    );
+    const user = await request(app).post("/api/auth/register").send({
+      names: "Anathole K",
+      password: "1234",
+      email: "test@gmail.com",
+      roles: "user",
+    });
 
-    console.log(user.body);
+    // console.log(user.body);
 
     if (user) {
       const response = await request(app).post("/api/auth/register").send({
@@ -110,7 +107,7 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
     expect(response.body).to.be.an("object");
   });
 
-// AUTH
+  // AUTH
   it("/POST Authenticcate a user and get a token to use for the rest of the APIs (200) ", async function () {
     await request(app).post("/api/auth/register").send({
       names: "Anathole K",
@@ -129,11 +126,6 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
   });
 
   it(" GET users without access priviledge 401", async function () {
-    await request(app).post("/api/auth/login").send({
-      email: "test@gmail.com",
-      password: "1234",
-    });
-
     const response = await request(app).get("/api/users/all");
     expect(response.status).to.eql(401);
   });
@@ -161,7 +153,6 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
     expect(response.body).to.be.an("array");
   });
 
-
   it(" /DELETE user without passing an Id along with body -> returns  400", async function () {
     await request(app).post("/api/auth/register").send({
       names: "Anathole K",
@@ -175,18 +166,15 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
       password: "1234",
     });
 
-
     const response = await request(app)
       .delete("/api/users/delete")
       .set({
         token: `Bearer ${loginResponse.body.accessToken}`,
       });
     expect(response.status).to.eql(400);
-    
   });
 
   it(" /DELETE user with ID -> returns  202", async function () {
-
     let allUsers;
 
     await request(app).post("/api/auth/register").send({
@@ -201,7 +189,7 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
       password: "1234",
     });
 
-     allUsers = await request(app)
+    allUsers = await request(app)
       .get("/api/users/all")
       .set({
         token: `Bearer ${loginResponse.body.accessToken}`,
@@ -209,27 +197,20 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
 
     const response = await request(app)
       .delete("/api/users/delete")
-      .send({id: allUsers.body[0]._id})
+      .send({ id: allUsers.body[0]._id })
       .set({
         token: `Bearer ${loginResponse.body.accessToken}`,
       });
     expect(response.status).to.eql(202);
-    
   });
 
-
-
   it(" /DELETE user Whose Id doesn't exist -> returns  204", async function () {
-
-    let allUsers;
-
     await request(app).post("/api/auth/register").send({
       names: "Anathole Kk",
       password: "1234",
       email: "test@gmail.com",
       roles: "user",
     });
-
 
     const loginResponse = await request(app).post("/api/auth/login").send({
       email: "test@gmail.com",
@@ -238,15 +219,14 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
 
     const response = await request(app)
       .delete("/api/users/delete")
-      .send({id:'63d9cc7d5edb78550c1473cf'})
+      .send({ id: "63d9cc7d5edb78550c1473cf" })
       .set({
         token: `Bearer ${loginResponse.body.accessToken}`,
       });
     expect(response.status).to.eql(204);
-    
   });
 
-// get user 
+  // get user
   it(" /GET user without passing an Id along with path -> returns  404", async function () {
     await request(app).post("/api/auth/register").send({
       names: "Anathole K",
@@ -260,16 +240,13 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
       password: "1234",
     });
 
-
     const response = await request(app)
       .delete("/api/users")
       .set({
         token: `Bearer ${loginResponse.body.accessToken}`,
       });
     expect(response.status).to.eql(404);
-    
   });
-
 
   // get user  with bad ID format
   it(" /GET user with bad ID format passing along with path -> returns  422", async function () {
@@ -291,22 +268,16 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
         token: `Bearer ${loginResponse.body.accessToken}`,
       });
     expect(response.status).to.eql(422);
-    
   });
-
 
   // Get a user by ID does not exist
   it(" /GET user Whose Id doesn't exist -> returns  404", async function () {
-
-    let allUsers;
-
     await request(app).post("/api/auth/register").send({
       names: "Anathole Kk",
       password: "1234",
       email: "test@gmail.com",
       roles: "user",
     });
-
 
     const loginResponse = await request(app).post("/api/auth/login").send({
       email: "test@gmail.com",
@@ -319,12 +290,10 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
         token: `Bearer ${loginResponse.body.accessToken}`,
       });
     expect(response.status).to.eql(404);
-    
   });
 
-  // Get an existing user 
+  // Get an existing user
   it(" /GET user with ID -> returns  200", async function () {
-
     let allUsers;
 
     await request(app).post("/api/auth/register").send({
@@ -339,7 +308,7 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
       password: "1234",
     });
 
-     allUsers = await request(app)
+    allUsers = await request(app)
       .get("/api/users/all")
       .set({
         token: `Bearer ${loginResponse.body.accessToken}`,
@@ -351,8 +320,36 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
         token: `Bearer ${loginResponse.body.accessToken}`,
       });
     expect(response.status).to.eql(200);
-    
   });
 
+  // Get a  user not found
+  it(" /GET user with Id not found -> returns  (204)", async function () {
+    let allUsers;
 
+    await request(app).post("/api/auth/register").send({
+      names: "Anathole Kk",
+      password: "1234",
+      email: "test@gmail.com",
+      roles: "user",
+    });
+
+    const loginResponse = await request(app).post("/api/auth/login").send({
+      email: "test@gmail.com",
+      password: "1234",
+    });
+
+    allUsers = await request(app)
+      .get("/api/users/all")
+      .set({
+        token: `Bearer ${loginResponse.body.accessToken}`,
+      });
+
+    await User.deleteOne({});
+    const response = await request(app)
+      .get(`/api/users/${allUsers.body[0]._id}`)
+      .set({
+        token: `Bearer ${loginResponse.body.accessToken}`,
+      });
+    expect(response.status).to.eql(204);
+  });
 });
