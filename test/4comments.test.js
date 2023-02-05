@@ -66,7 +66,7 @@ describe("-----Blogs Comments------", async function () {
     blogId = res.body.result._id;
 
     console.log(blogId);
-    const response = await rqst.get(`/api/blogs/comments/${blogId}`);
+    const response = await rqst.get(`/api/comments/${blogId}`);
     expect(response.status).to.eql(200);
   });
 
@@ -76,7 +76,7 @@ describe("-----Blogs Comments------", async function () {
   });
 
   it("/GET all comments, fails with Blog Id not exist 204 status", async () => {
-    const response = await rqst.get(`/api/blogs/comments/63df644cbcaa1a120c9662db`);
+    const response = await rqst.get(`/api/comments/63df644cbcaa1a120c9662db`);
     expect(response.status).to.eql(204);
   });
 
