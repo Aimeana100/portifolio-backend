@@ -4,9 +4,7 @@ import mongoose from "mongoose";
 const { ObjectId } = mongoose.Types;
 
 const getAllComments = async (req, res) => {
-  if (!req?.params?.blog_id) {
-    return res.status(400).json({ message: " No blog specified" });
-  } else if (!ObjectId.isValid(req.params.blog_id)) {
+  if (!ObjectId.isValid(req.params.blog_id)) {
     return res
       .status(422)
       .json({ message: "Blog Id should be a valid mongoose ObjectId" });
@@ -16,7 +14,7 @@ const getAllComments = async (req, res) => {
 
   let blog = await Blog.findById(blog_id);
   if (!blog) {
-    return res.status(404).json({ message: "Blog with provided ID not found" });
+    return res.status(204).json({ message: "Blog with provided ID not found" });
   }
 
   const comments = await Blog.aggregate([
@@ -32,9 +30,10 @@ const getAllComments = async (req, res) => {
       },
     },
   ]);
-  console.log(comments);
-  if (comments[0]?.comments.length < 1)
+
+  if (comments[0]?.comments.length < 1) {
     return res.status(204).json({ message: "No comments found." });
+  }
   res.status(200).json(comments);
 };
 
@@ -52,25 +51,24 @@ const createNewComment = async (req, res) => {
       .json({ message: "Blog Id should be a valid mongoose ObjectId" });
   }
 
-    const result = await Comment.create({
-      names: req.body.names,
-      email: req.body.email,
-      description: req.body.description,
-      status: req.body.status,
-    });
+  const result = await Comment.create({
+    names: req.body.names,
+    email: req.body.email,
+    description: req.body.description,
+    status: req.body.status,
+  });
 
-    if (result) {
-      let blog_id = req.params.blog_id;
-      await Blog.updateMany(
-        { _id: blog_id },
-        { $push: { comments: result._id } }
-      );
-    }
-    res.status(201);
+  if (result) {
+    let blog_id = req.params.blog_id;
+    await Blog.updateMany(
+      { _id: blog_id },
+      { $push: { comments: result._id } }
+    );
+  }
+  res.status(201);
 
-    res.json(result);
-    res.status(201).json(result, { message: "Comment added successfully"});
- 
+  res.json(result);
+  res.status(201).json(result, { message: "Comment added successfully" });
 };
 
 const updateComment = async (req, res) => {

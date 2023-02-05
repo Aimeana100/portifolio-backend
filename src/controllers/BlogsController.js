@@ -20,16 +20,14 @@ const createNewBlog = async (req, res) => {
   ) {
     return res
       .status(400)
-      .json({ message: 'blog category, Title, Description and Image are required' });
+      .json({status:400, cat : req.body.category,  message: 'blog category, Title, Description and Image are required' });
   } 
 
   if (!ObjectId.isValid(req.body.category))  {
     return res
       .status(422)
       .json({ message: 'Id should be a valid mongoose ObjectId' });
-  } ;
-
-
+  };
 
   const contact = await Category.findOne({ _id: req.body.category }).exec();
   if (!contact) {
@@ -37,7 +35,6 @@ const createNewBlog = async (req, res) => {
       .status(204)
       .json({ message: `No Category matches ID ${req.params.id}.` });
   }
-
 
     const imgResult = await cloudinary.uploader.upload(req.file.path);
 
@@ -52,6 +49,7 @@ const createNewBlog = async (req, res) => {
         id: imgResult.public_id,
       },
     };
+
 
     const result = await Blog.create(blog);
     res.status(201).json({result,  message: 'Blog created successfully' });
@@ -92,15 +90,14 @@ const updateBlog = async (req, res) => {
       id: imgResult.public_id,
     };
   }
-
   const result = await blog.save();
-  res.json(result);
+  res.statu(200).json(result);
 };
 
 const deleteBlog = async (req, res) => {
   if (!req?.body?.id) { return res.status(400).json({ message: 'Blog ID required.' }); }
 
-  if (!ObjectId.isValid(req.body.id))  {
+  if (!ObjectId.isValid(req.body.id)) {
     return res
       .status(422)
       .json({ message: 'Id should be a valid mongoose ObjectId' });
