@@ -4,7 +4,11 @@ const {ObjectId} = mongoose.Types;
 
 const getAllContacts = async (req, res) => {
     const contacts = await Contact.find();
-    if (!contacts) return res.status(204).json({contacts,  'message': 'No contacts found.' });
+    if (contacts.length === 0)
+    {
+        return res.status(204).json({contacts,  'message': 'No contacts found.' });
+    }
+
     res.status(200).json(contacts);
 }
 
@@ -39,17 +43,22 @@ const deleteContact = async (req, res) => {
         return res.status(204).json({ "message": `No contact matches ID ${req.body.id}.` });
     }
     const result = await contact.deleteOne(); 
-    res.json(result,{ "message": "deleted successfully" });
+    res.status(200).json({result, message: "deleted successfully" });
 }
 
 const getContact = async (req, res) => {
-    if (!req?.params?.id) return res.status(400).json({ 'message': 'Contact ID required.' });
+
+    if (!ObjectId.isValid(req.params.id))  {
+        return res
+          .status(422)
+          .json({ message: 'Id should be a valid mongoose ObjectId' });
+      } ;
 
     const contact = await Contact.findOne({ _id: req.params.id }).exec();
     if (!contact) {
         return res.status(204).json({ "message": `No contact matches ID ${req.params.id}.` });
     }
-    res.json(contact);
+    res.status(200).json({contact, message: 'Contact found.'});
 }
 
 export default { getAllContacts, createNewContact, deleteContact, getContact };
