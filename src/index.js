@@ -16,7 +16,7 @@ import loginRouter from './routes/login';
 import logoutRouter from './routes/logout';
 import upload from './config/multer';
 import {swaggerDocRouter} from './documentantion';
-import corsOptions from './middleware/corsOptions';
+// import corsOptions from './middleware/corsOptions';
 
 const { NODE_ENV } = process.env;
 
@@ -24,9 +24,16 @@ const app = express();
 dotenv.config();
 connectDB();
 
-
 // Cross Origin Resource Sharing
+
 // app.use(cors(corsOptions));
+app.use(cors());
+
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 // middleware
 app.use(express.json());

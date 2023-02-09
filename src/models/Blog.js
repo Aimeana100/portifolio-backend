@@ -31,6 +31,10 @@ const BlogSchema = new Schema({
     type: String,
     default: 'unmuted',
   },
+  created_at: {
+    type: Object,
+    default: new Date()
+  }
 });
 
 export default mongoose.model('Blog', BlogSchema);

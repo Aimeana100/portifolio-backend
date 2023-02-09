@@ -15,6 +15,10 @@ const contactSchema = new Schema({
     type: String,
     required: true,
   },
+  created_at:{
+    type: Object,
+    default: new Date(),
+  }
 });
 
 export default mongoose.model('Contact', contactSchema);

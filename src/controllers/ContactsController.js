@@ -8,7 +8,6 @@ const getAllContacts = async (req, res) => {
     {
         return res.status(204).json({contacts,  'message': 'No contacts found.' });
     }
-
     res.status(200).json(contacts);
 }
 

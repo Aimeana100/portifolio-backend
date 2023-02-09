@@ -6,7 +6,18 @@ import cloudinary from '../config/cloudinary';
 const {ObjectId} = mongoose.Types;
 
 const getAllBlogs = async (req, res) => {
-  const blogs = await Blog.find();
+  const blogs = await Blog.aggregate([
+    {
+      $lookup: {
+        from: "comments",
+        localField: "comments",
+        foreignField: "_id",
+        as: "comments",
+      },
+    },
+  ]);
+
+
   if (!blogs) return res.status(204).json({ message: 'No blogs found.' });
   res.status(200).json(blogs);
 };
@@ -91,7 +102,7 @@ const updateBlog = async (req, res) => {
     };
   }
   const result = await blog.save();
-  res.statu(200).json(result);
+  res.status(200).json(result);
 };
 
 const deleteBlog = async (req, res) => {
@@ -111,7 +122,7 @@ const deleteBlog = async (req, res) => {
       .json({ message: `No blog matches ID ${req.body.id}.` });
   }
   const result = await blog.deleteOne();
-  res.json(result);
+  res.status(200).json(result);
 };
 
 const getBlog = async (req, res) => {
@@ -123,13 +134,25 @@ const getBlog = async (req, res) => {
       .json({ message: 'Id should be a valid mongoose ObjectId' });
   };
 
-  const blog = await Blog.findOne({ _id: req.params.id }).exec();
+  const blog = await Blog.aggregate([
+    {
+      $match: { _id: ObjectId(req.params.id) },
+    },
+    {
+      $lookup: {
+        from: "comments",
+        localField: "comments",
+        foreignField: "_id",
+        as: "comments",
+      },
+    },
+  ]);
   if (!blog) {
     return res
       .status(204)
       .json({ message: `No blog matches ID ${req.params.id}.` });
   }
-  res.status(200).json({ 'blog' : blog, message : 'successfully '});
+  res.status(200).json({ 'blog' : blog[0], message : 'successfully '});
 };
 
 export default {
