@@ -65,10 +65,7 @@ const createNewComment = async (req, res) => {
       { $push: { comments: result._id } }
     );
   }
-  res.status(201);
-
-  res.json(result);
-  res.status(201).json(result, { message: "Comment added successfully" });
+  res.status(201).json({result, message: "Comment added successfully" });
 };
 
 const updateComment = async (req, res) => {
@@ -85,7 +82,7 @@ const updateComment = async (req, res) => {
   if (req.body?.description) comment.description = req.body.description;
   if (req.body?.status) comment.status = req.body.status;
   const result = await comment.save();
-  res.json(result);
+  res.status(201).json(result);
 };
 
 const deleteComment = async (req, res) => {

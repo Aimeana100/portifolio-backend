@@ -10,7 +10,6 @@ router.route('/all').get(BlogsController.getAllBlogs)
 router.route('/add').post(verfyJWT, BlogsController.createNewBlog)
 router.route('/update').put(verfyJWT, BlogsController.updateBlog)
 router.route('/delete').delete(verfyJWT, BlogsController.deleteBlog);
-
 router.route('/:id').get(BlogsController.getBlog);
 
 export default router;
