@@ -1,5 +1,4 @@
 process.env.NODE_ENV = "test";
-
 //Require the dev-dependencies
 import app from "../src/index";
 import chai from "chai";
@@ -20,7 +19,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   let token;
 
   beforeEach(async (done) => {
-    await Category.deleteMany({}, done());
+    await Category.deleteOne({}, done());
   });
 
   afterEach(async (done) => {
@@ -125,7 +124,6 @@ describe("----- BLOG CATEGORY ------", async function () {
     expect(response.status).to.eql(200);
   });
 
-
   // will fail to update a blog category due Category not found (204)
   it("/PUT returns  Category ID not found -> not updated ", async () => {
     const category = await rqst
@@ -166,31 +164,6 @@ describe("----- BLOG CATEGORY ------", async function () {
     expect(response.status).to.eql(400);
   });
 
-  // will  update a blog category  (200)
-  it("/PUT returns successful update ", async () => {
-    const category = await rqst
-      .post("/api/categories/add")
-      .set({
-        token: `Bearer ${token}`,
-      })
-      .send({
-        name: "Software Development",
-      });
-
-    categoryId = category.body.result._id;
-    const response = await rqst
-      .put("/api/categories/update")
-      .set({
-        token: `Bearer ${token}`,
-      })
-      .send({
-        id: categoryId,
-        name: "Software Development",
-      });
-    expect(response.status).to.eql(200);
-  });
-
-
   // Get a single category successfully
   it("/GET returns single blog category  (200)", async function () {
     const category = await rqst
@@ -207,7 +180,6 @@ describe("----- BLOG CATEGORY ------", async function () {
     const response = await rqst.get(`/api/categories/${categoryId}`);
     expect(response.status).to.eql(200);
   });
-
 
   // will fail to Delete a blog category due Category ID not passed throught body (400)
   it("/DELETE returns fail -> not user Authenticated (401)", async () => {
@@ -244,6 +216,48 @@ describe("----- BLOG CATEGORY ------", async function () {
     expect(response.status).to.eql(422);
   });
 
+  // will fail to Delete a blog category due Category by Id not found (204)
+  it("/DELETE returns no category with the Id (204)", async () => {
+    const response = await rqst
+      .delete("/api/categories/delete")
+      .set({
+        token: `Bearer ${token}`,
+      })
+      .send({
+        id: "63bf8a9ebb9f502223bb30ad",
+        name: "Software Development",
+      });
+    expect(response.status).to.eql(204);
+  });
+
+
+
+  // will  update a blog category  (200)
+  it("/POST returns successful update (200)", async () => {
+    const category = await rqst
+      .post("/api/categories/add")
+      .set({
+        token: `Bearer ${token}`,
+      })
+      .send({
+        name: "Software Development",
+      });
+
+    categoryId = category.body.result._id;
+
+    const response = await rqst
+      .put("/api/categories/update")
+      .set({
+        token: `Bearer ${token}`,
+      })
+      .send({
+        id: categoryId,
+        name: "Software Development",
+      });
+    expect(response.status).to.eql(200);
+  });
+
+  
   // will delete a blog category (200)
   it("/DELETE will delete a blog category (200)", async () => {
     const category = await rqst
@@ -257,6 +271,8 @@ describe("----- BLOG CATEGORY ------", async function () {
 
     categoryId = category.body.result._id;
 
+    console.log(categoryId);
+
     const response = await rqst
       .delete("/api/categories/delete")
       .set({
@@ -264,56 +280,16 @@ describe("----- BLOG CATEGORY ------", async function () {
       })
       .send({
         id: categoryId,
-        name: "Software Development",
       });
     expect(response.status).to.eql(200);
   });
 
-
-  // will fail to Delete a blog category due Category by Id not found (204)
-  it("/DELETE returns no category with the Id (204)", async () => {
-    const category = await rqst
-      .post("/api/categories/add")
-      .set({
-        token: `Bearer ${token}`,
-      })
-      .send({
-        name: "Software Development",
-      });
-
-    categoryId = category.body.result._id;
-    await Category.deleteOne({});
-
-    const response = await rqst
-      .delete("/api/categories/delete")
-      .set({
-        token: `Bearer ${token}`,
-      })
-      .send({
-        id: categoryId,
-        name: "Software Development",
-      });
-    expect(response.status).to.eql(204);
-  });
-
-  // Get a single category will fail no category found (204)
-  it("/GET returns single blog category not exist (204) ", async function () {
-    const category = await rqst
-      .post("/api/categories/add")
-      .set({
-        token: `Bearer ${token}`,
-      })
-      .send({
-        name: "Software Development",
-      });
-
-    categoryId = category.body.result._id;
-    await Category.deleteOne({});
-
-    const response = await rqst.get(`/api/categories/${categoryId}`);
-    expect(response.status).to.eql(204);
-  });
-
+    // Get a single category will fail no category found (204)
+    it("/GET returns single blog category not exist (204) ", async function () {
+      const response = await rqst.get(`/api/categories/63e61a111ce50137bcc268d0`);
+      expect(response.status).to.eql(204);
+    });
+  
   // Get a single category will fail by Category Id bad format (422)
   it("/GET returns single blog category of bad format -> fail (422) ", async function () {
     const response = await rqst.get(`/api/categories/dfgdfhjghdjgnhgdjfhgd`);

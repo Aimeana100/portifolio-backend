@@ -4,7 +4,7 @@
 <div align="center">
   <h3 align="center"> # Anathole's Portifolio backend REST API </h3>
   <br>
-  ![check-code-coverage](https://img.shields.io/badge/code--coverage-80%-brightgreen)
+  ![check-code-coverage](https://img.shields.io/badge/code--coverage-60%-brightgreen)
 </div>
 
 

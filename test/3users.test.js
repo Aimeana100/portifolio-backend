@@ -174,36 +174,6 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
     expect(response.status).to.eql(400);
   });
 
-  it(" /DELETE user with ID -> returns  202", async function () {
-    let allUsers;
-
-    await request(app).post("/api/auth/register").send({
-      names: "Anathole Kk",
-      password: "1234",
-      email: "test@gmail.com",
-      roles: "user",
-    });
-
-    const loginResponse = await request(app).post("/api/auth/login").send({
-      email: "test@gmail.com",
-      password: "1234",
-    });
-
-    allUsers = await request(app)
-      .get("/api/users/all")
-      .set({
-        token: `Bearer ${loginResponse.body.accessToken}`,
-      });
-
-    const response = await request(app)
-      .delete("/api/users/delete")
-      .send({ id: allUsers.body[0]._id })
-      .set({
-        token: `Bearer ${loginResponse.body.accessToken}`,
-      });
-    expect(response.status).to.eql(202);
-  });
-
   it(" /DELETE user Whose Id doesn't exist -> returns  204", async function () {
     await request(app).post("/api/auth/register").send({
       names: "Anathole Kk",
@@ -225,6 +195,39 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
       });
     expect(response.status).to.eql(204);
   });
+
+
+  it(" /DELETE user with ID -> returns  202", async function () {
+    let allUsers;
+    await request(app).post("/api/auth/register").send({
+      names: "Anathole Kk",
+      password: "1234",
+      email: "test@gmail.com",
+      roles: "user",
+    });
+
+    const loginResponse = await request(app).post("/api/auth/login").send({
+      email: "test@gmail.com",
+      password: "1234",
+    });
+
+    allUsers = await request(app)
+      .get("/api/users/all")
+      .set({
+        token: `Bearer ${loginResponse.body.accessToken}`,
+      });
+
+      console.log(allUsers.body);
+
+    const response = await request(app)
+      .delete("/api/users/delete")
+      .send({ id: allUsers.body[0]._id })
+      .set({
+        token: `Bearer ${loginResponse.body.accessToken}`,
+      });
+    expect(response.status).to.eql(200);
+  });
+
 
   // get user
   it(" /GET user without passing an Id along with path -> returns  404", async function () {

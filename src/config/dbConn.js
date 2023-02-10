@@ -3,10 +3,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const {DATABASE_URI, DATABASE_URI_TEST, NODE_ENV} = process.env;
+console.log(NODE_ENV==='test');
 const connectDB = async () => {
     try {
         mongoose.set('strictQuery', false);
-        await mongoose.connect( NODE_ENV === 'test' ? DATABASE_URI_TEST : DATABASE_URI , {
+        await mongoose.connect( NODE_ENV == 'test' ? DATABASE_URI_TEST : DATABASE_URI , {
             useUnifiedTopology: true,
             useNewUrlParser: true
         });
