@@ -65,7 +65,7 @@ const createNewComment = async (req, res) => {
       { $push: { comments: result._id } }
     );
   }
-  res.status(201).json({result, message: "Comment added successfully" });
+  res.status(201).json({ result, message: "Comment added successfully" });
 };
 
 const updateComment = async (req, res) => {
@@ -115,6 +115,12 @@ const deleteComment = async (req, res) => {
 const getComment = async (req, res) => {
   if (!req?.params?.id)
     return res.status(400).json({ message: "Comment ID required." });
+
+  if (!ObjectId.isValid(req.params.blog_id)) {
+    return res
+      .status(422)
+      .json({ message: "Blog Id should be a valid mongoose ObjectId" });
+  }
 
   const comment = await Comment.findOne({ _id: req.params.id }).exec();
   if (!comment) {

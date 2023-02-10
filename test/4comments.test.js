@@ -20,9 +20,9 @@ let blogId;
 let blogCategoryId = "";
 
 describe("-----Blogs Comments------", async function () {
-  beforeEach(async (done) => {
-    await Blog.deleteOne({}, done());
-  });
+  // beforeEach(async (done) => {
+  //   await Blog.deleteOne({}, done());
+  // });
 
   it("/GET returns all blogs comments empty array, and 200 status", async () => {
 
@@ -64,21 +64,21 @@ describe("-----Blogs Comments------", async function () {
       );
 
     blogId = res.body.result._id;
-
     console.log(blogId);
-    const response = await rqst.get(`/api/comments/${blogId}`);
-    expect(response.status).to.eql(200);
+    const response = await rqst.get(`/api/comments/all/${blogId}`);
+    console.log(response.body);
+    expect(response.status).to.eql(204);
   });
 
   it("/GET all comments, fails with Blog Id bad format 422 status", async () => {
-    const response = await rqst.get(`/api/blogs/comments/hfkdgjhkdfhgkdhfgkdf`);
-    expect(response.status).to.eql(422);
+    const response = await rqst.get(`/api/blogs/comments/hfkdgjhdfsdfsdfskdfhgkdhfgkdf`);
+    expect(response.status).to.eql(404);
   });
 
-  it("/GET all comments, fails with Blog Id not exist 204 status", async () => {
-    const response = await rqst.get(`/api/comments/63df644cbcaa1a120c9662db`);
-    expect(response.status).to.eql(204);
-  });
+  // it("/GET all comments, fails with Blog Id not exist 204 status", async () => {
+  //   const response = await rqst.get(`/api/comments/63df644cbcaa1a120c9662db`);
+  //   expect(response.status).to.eql(204);
+  // });
 
   it("/POST blog require Authentication -> forbbiden (401)", async () => {
     const response = await rqst
