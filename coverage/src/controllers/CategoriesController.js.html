@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.33% </span>
+                <span class="strong">97.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>42/45</span>
+                <span class='fraction'>42/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>21/24</span>
+                <span class='fraction'>20/22</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>38/40</span>
+                <span class='fraction'>39/39</span>
             </div>
         
             
@@ -142,29 +142,27 @@
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,10 +194,10 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -230,13 +228,12 @@ import Category from '../models/Category';
  
 const getAllCategories = async (req, res) =&gt; {
   const categories = await Category.find();
-  if (categories.length === 0 ) return res.status(204).json({ message: 'No categories found.' });
-  res.json(categories);
+  res.status(200).json(categories);
 };
 &nbsp;
 const createNewCategory = async (req, res) =&gt; {
   if (!req?.body?.name) {
-    return res.status(400).json({ message: ' category name is required' });
+    return res.status(400).json({ message: 'category name is required' });
   }
 &nbsp;
     const result = await Category.create({
@@ -274,12 +271,12 @@ const deleteCategory = async (req, res) =&gt; {
   } ;
 &nbsp;
   const category = await Category.findOne({ _id: req.body.id }).exec();
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (!category) {
+  if (!category) {
     
     return res.status(204).json({ message: `No category matches ID ${req.body.id}.` });
   }
-  const result = <span class="cstat-no" title="statement not covered" >await category.deleteOne();</span>
-<span class="cstat-no" title="statement not covered" >  res.status(200).json({result, message: 'Category deleted successfully'});</span>
+  const result = await category.deleteOne();
+  res.status(200).json({result, message: 'Category deleted successfully'});
 };
 &nbsp;
 const getCategory = async (req, res) =&gt; {
@@ -310,7 +307,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-10T15:49:59.377Z
+                at 2023-02-13T04:47:57.748Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

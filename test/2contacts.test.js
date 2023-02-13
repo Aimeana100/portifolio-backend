@@ -11,17 +11,14 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 const rqst = request(app);
-let token = "";
-let allBlogs;
+let token;
+let allContacts;
 
 describe("-----CONTACTS------", async function () {
-  beforeEach(async (done) => {
+  before(async (done) => {
     await Contact.deleteOne({}, done());
   });
 
-  afterEach(async (done) => {
-    await Contact.deleteOne({}, done());
-  });
 
   // all fields not filled
   it("/POST contacts -> returns one of all fields not passed (400) ", async function () {
@@ -184,26 +181,42 @@ describe("-----CONTACTS------", async function () {
         id: contactId,
       });
     expect(response.status).to.eql(200);
+    expect(response.body).to.be.an("object");
+    expect(response.body).to.have.property("message");
+
   });
 
   // GET contacts -> returns all contacts (200)
   it(" /GET Single contact authenicated user-> return (200) ", async function () {
-    await rqst.post("/api/contacts/add").send({
-      names: "Anathole K contact",
-      email: "test@gmail.com",
-      description: "content of contact",
-    });
 
-    allBlogs = await rqst.get("/api/contacts/all").set({
-      token: `Bearer ${token}`,
-    });
+    do {
+      allContacts = await rqst.get("/api/contacts/all").set({
+        token: `Bearer ${token}`,
+      });
+    }
+
+    while(allContacts.length < 1){
+      
+      await rqst.post("/api/contacts/add").send({
+        names: "Anathole K contact",
+        email: "test@gmail.com",
+        description: "content of contact",
+      });
+  
+      allContacts = await rqst.get("/api/contacts/all").set({
+        token: `Bearer ${token}`,
+      });
+
+    }
 
     const response = await rqst
-      .get(`/api/contacts/${allBlogs.body[0]._id}`)
+      .get(`/api/contacts/${allContacts.body[0]._id}`)
       .set({
         token: `Bearer ${token}`,
       });
     expect(response.status).to.eql(200);
+    expect(response.body).to.have.property("message");
+
   });
 
   // GET contacts with mistaken route -> returns all contacts (404)
@@ -222,5 +235,6 @@ describe("-----CONTACTS------", async function () {
         token: `Bearer ${token}`,
       });
     expect(response.status).to.eql(422);
+    expect(response.body).to.be.an("object");
   });
 });

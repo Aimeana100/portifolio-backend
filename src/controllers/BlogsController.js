@@ -89,8 +89,6 @@ const updateBlog = async (req, res) => {
   if (req.body?.description) blog.description = req.body.description;
   if (req.body?.category) blog.category = req.body.category;
   if (req.body?.status) blog.status = req.body.status === "muted" ? "unmuted" : "muted";
-  
-  console.log(req.body)
 
   if (req.file) {
     console.log(req.file)

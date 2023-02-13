@@ -43,9 +43,7 @@ const createNewComment = async (req, res) => {
       .status(400)
       .json({ message: "User names , email and comment message is required" });
   }
-  if (!req?.params?.blog_id) {
-    return res.status(400).json({ message: " No blog specified" });
-  } else if (!ObjectId.isValid(req.params.blog_id)) {
+   if (!ObjectId.isValid(req.params.blog_id)) {
     return res
       .status(422)
       .json({ message: "Blog Id should be a valid mongoose ObjectId" });
@@ -82,7 +80,7 @@ const updateComment = async (req, res) => {
   if (req.body?.description) comment.description = req.body.description;
   if (req.body?.status) comment.status = req.body.status;
   const result = await comment.save();
-  res.status(201).json(result);
+  res.status(201).json({result, message: "Comment updated successfully"});
 };
 
 const deleteComment = async (req, res) => {
@@ -113,13 +111,11 @@ const deleteComment = async (req, res) => {
 };
 
 const getComment = async (req, res) => {
-  if (!req?.params?.id)
-    return res.status(400).json({ message: "Comment ID required." });
 
-  if (!ObjectId.isValid(req.params.blog_id)) {
+  if (!ObjectId.isValid(req.params.id)) {
     return res
       .status(422)
-      .json({ message: "Blog Id should be a valid mongoose ObjectId" });
+      .json({ message: "Comment Id should be a valid mongoose ObjectId" });
   }
 
   const comment = await Comment.findOne({ _id: req.params.id }).exec();

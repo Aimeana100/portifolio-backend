@@ -5,13 +5,12 @@ import Category from '../models/Category';
  
 const getAllCategories = async (req, res) => {
   const categories = await Category.find();
-  if (categories.length === 0 ) return res.status(204).json({ message: 'No categories found.' });
-  res.json(categories);
+  res.status(200).json(categories);
 };
 
 const createNewCategory = async (req, res) => {
   if (!req?.body?.name) {
-    return res.status(400).json({ message: ' category name is required' });
+    return res.status(400).json({ message: 'category name is required' });
   }
 
     const result = await Category.create({

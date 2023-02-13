@@ -18,7 +18,7 @@ const deleteUser = async (req, res) => {
   }
   const result = await User.deleteOne({ _id: req.body.id }).exec();
 
-  res.status(200).json(result);
+  res.status(200).json({result, message: 'Deleted successfully'});
 };
 
 const getUser = async (req, res) => {
