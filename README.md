@@ -1,13 +1,17 @@
 # Anathole's Portifolio backend REST API
 
-![check-code-coverage](https://img.shields.io/badge/code--coverage-86.01%25-green)
-<!-- ![](https://img.shields.io/badge/Coverage-84%25-83A603.svg?prefix=$coverage$) -->
+<!-- ![check-code-coverage](https://img.shields.io/badge/code--coverage-86.01%25-green) -->
+
+![](https://img.shields.io/badge/Coverage-84%25-83A603.svg?prefix=$coverage$)    ![](https://img.shields.io/badge/Coverage-86%25-83A603.svg?style=flat&logo=kotlin&logoColor=white&color=blue&prefix=$statements$) ![](https://img.shields.io/badge/Coverage-75%25-5A7302.svg?style=social&logo=ktor&logoColor=black&color=red&prefix=$branches$) ![](https://img.shields.io/badge/Coverage-88%25-83A603.svg?prefix=$functions$) ![](https://img.shields.io/badge/Coverage-87%25-83A603.svg?prefix=$lines$)
+
+![AppVeyor](https://img.shields.io/appveyor/build/Aimena100/portifolio-backend)
+![AppVeyor tests](https://img.shields.io/appveyor/tests/Aimeana100/portifolio-backend)
 
 <!-- PROJECT LOGO and Intro -->
 <br />
-<div align="center">
-  <h3> ## Intoroduction </h3>
-  <br>
+<div >
+  ## Intoroduction 
+ <br>
 </div>
 
 
