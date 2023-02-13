@@ -33,10 +33,12 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
     expect(400, "names, email and password are required.");
   });
 
-  it("returns new user with and status (201) ", async function () {
+  it("returns new user with and status (201)", async function () {
     let response;
 
+    await User.deleteOne({});
     while (!response) {
+
       response = await request(app).post("/api/auth/register").send({
         names: "Anathole K",
         password: "1234",
@@ -236,7 +238,7 @@ describe("----- USER LOGIN and REGISTER ------", async function () {
         });
     }
 
-    console.log(allUsers.body[0]._id);
+    // console.log(allUsers.body[0]._id);
 
     const response = await request(app)
       .delete("/api/users/delete")

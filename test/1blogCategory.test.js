@@ -252,7 +252,6 @@ describe("----- BLOG CATEGORY ------", async function () {
     categoryId = category.body.result._id;
 
     if (categoryId) {
-      console.log(categoryId);
       const response = await rqst
         .delete("/api/categories/delete")
         .set({

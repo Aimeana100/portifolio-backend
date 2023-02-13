@@ -87,7 +87,7 @@ const deleteComment = async (req, res) => {
   if (!req?.body?.id)
     return res.status(400).json({ message: "Comment ID required." });
 
-  if (!ObjectId.isValid(req.params.blog_id)) {
+  if (!ObjectId.isValid(req.body.id)) {
     return res
       .status(422)
       .json({ message: "Comment Id should be a valid mongoose ObjectId" });
@@ -107,11 +107,10 @@ const deleteComment = async (req, res) => {
       { $pull: { comments: result._id } }
     );
   }
-  res.json(result, { message: "Comment deleted successfully" });
+  res.json.status(200).json({result,  message: "Comment deleted successfully" });
 };
 
 const getComment = async (req, res) => {
-
   if (!ObjectId.isValid(req.params.id)) {
     return res
       .status(422)

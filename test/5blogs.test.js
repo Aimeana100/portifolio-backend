@@ -159,7 +159,7 @@ describe("-----Blogs------", async function () {
     expect(res.status).to.eql(201);
   });
 
-  it("/GET  single blog, and returns 200 status", async () => {
+  it("/POST  single blog, and returns 200 status", async () => {
     const res = await rqst
       .post("/api/blogs/add")
       .set("Content-Type", "application/x-www-form-urlencoded")
@@ -200,7 +200,6 @@ describe("-----Blogs------", async function () {
   // add blog Id not found
   it("/POST create blog category ID not found 204 ", async () => {
     await Category.deleteOne({});
-
     const res = await rqst
       .post("/api/blogs/add")
       .set("Content-Type", "application/x-www-form-urlencoded")
@@ -236,6 +235,27 @@ describe("-----Blogs------", async function () {
     expect(res.status).to.eql(400);
     expect(res.body.message).to.eql("ID parameter is required.");
     // expect(res.body).to.be('Object');
+  });
+
+
+  // update no existing Blog Id 
+  it("/PUT update  blog fail blog Id doesn't exist  -> returns  (402) ", async  () => {
+    const res = await rqst
+      .put("/api/blogs/update")
+      .set("Content-Type", "application/x-www-form-urlencoded")
+      .set({ token: `Bearer ${token}` })
+      .field("Content-Type", "multipart/form-data")
+      .field("id", '63d9cc7d5edb78550c1473cf')
+      .field("title", "Blog title edited")
+      .field("description", "Blog description edited")
+      .field("category", blogCategoryId)
+      .attach(
+        "image",
+        fs.readFileSync(path.join(__dirname, "blog_test.png")),
+        "blog_test.png"
+      );
+    expect(res.status).to.eql(204);
+    expect(res.body).to.be.an('Object');
   });
 
   // update blog successfully
@@ -297,21 +317,6 @@ describe("-----Blogs------", async function () {
     const blogCategoryId = category.body.result._id;
 
     setTimeout(async () => {
-      newBlog = await rqst
-        .post("/api/blogs/add")
-        .set("Content-Type", "application/x-www-form-urlencoded")
-        .set({ token: `Bearer ${token}` })
-        .field("Content-Type", "multipart/form-data")
-        .field("title", "Blog title")
-        .field("description", "Blog description")
-        .field("category", blogCategoryId)
-        .attach(
-          "image",
-          fs.readFileSync(path.join(__dirname, "blog_test.png")),
-          "blog_test.png"
-        );
-      blogId = newBlog.body.result._id;
-      console.log(blogId);
 
       const res = await rqst
         .put("/api/blogs/update")
@@ -324,15 +329,56 @@ describe("-----Blogs------", async function () {
 
       expect(res.status).to.eql(422);
       expect(res.body).to.be("Object");
+      expect(res.body.message).to.eql("Id should be a valid mongoose ObjectId");
     }, 1000);
   });
 
+
+    // Delete
+    it("/DELETE delete  blog fail blog Id doesn't exist  -> returns  (204) ", async  () => {
+      const res = await rqst
+        .delete("/api/blogs/delete")
+        .set("Content-Type", "application/x-www-form-urlencoded")
+        .set({ token: `Bearer ${token}` })
+        .field("Content-Type", "multipart/form-data")
+        .field("id", '63d9cc7d5edb78550c1473cf')
+      expect(res.status).to.eql(204);
+      expect(res.body).to.be.an('Object');
+    });
+  
+
+
+    // Delete
+    it("/DELETE delete  blog fail blog Id doesn't exist  -> returns  (422) ", async  () => {
+      const res = await rqst
+        .delete("/api/blogs/delete")
+        .set("Content-Type", "application/x-www-form-urlencoded")
+        .set({ token: `Bearer ${token}` })
+        .field("Content-Type", "multipart/form-data")
+        .field("id", '63d9cc7d5edb78550c14fsdnfmdfnmdjgkdfgjdkffsd73cf')
+      expect(res.status).to.eql(422);
+      expect(res.body).to.be.an('Object');
+    });
+  
+
+
+    // Delete
+    it("/GET delete  blog fail blog Id doesn't exist  -> returns  (422) ", async  () => {
+      const res = await rqst
+        .get("/api/blogs/63d9cc7d5edb78550c14fsdnfmdfnmdjgkdfgjdkffsd73cf")
+        .set("Content-Type", "application/x-www-form-urlencoded")
+        .set({ token: `Bearer ${token}` })
+        .field("Content-Type", "multipart/form-data")
+      expect(res.status).to.eql(422);
+      expect(res.body).to.be.an('Object');
+    });
+  
 
   // COMMENTS
 
   it("/POST blog comment  201", async () => {
     console.log(
-      "=============================COMMENTS || BLOGS ============================"
+      "===================== COMMENTS || BLOGS ======================="
     );
 
     const response = await rqst.post(`/api/comments/add/${blogId}`).send({
@@ -345,6 +391,7 @@ describe("-----Blogs------", async function () {
     expect(response.body).to.be.an("Object");
     expect(response.body).to.have.property("message");
   });
+
 
   it("/POST blog comment  422", async () => {
     const response = await rqst
@@ -402,7 +449,7 @@ describe("-----Blogs------", async function () {
   // get a single comment
   it("/GET blog comment  422", async () => {
     const response = await rqst
-    .post(`/api/comments/fskfhskhkhjfhkshjfksfhjdsfs`)
+    .get(`/api/comments/fskfhskhkhjfhkshjfksfhjdsfs`)
     .send({
       names: "Anathole test",
     });
@@ -418,9 +465,6 @@ describe("-----Blogs------", async function () {
   it("/PUT update blog comment  201", async () => {
 
     comments = await rqst.get(`/api/comments/all/${blogId}`);
-
-    console.log(comments.body.blog.comments);
-
     do{
       await rqst.post(`/api/comments/add/${blogId}`).send({
         names: "Anathole test",
@@ -429,7 +473,7 @@ describe("-----Blogs------", async function () {
       });
     }
 
-    while(comments.body.blog.comments.length == 0){
+    while(comments.body[0]?.comments.length == 0){
       await rqst.post(`/api/comments/add/${blogId}`).send({
         names: "Anathole test",
         email: "aimeanathole@example.com",
@@ -438,9 +482,11 @@ describe("-----Blogs------", async function () {
 
       comments = await rqst.get(`/api/comments/all/${blogId}`);
     }
+    
+    // console.log(comments.body[0].comments);
 
     const response = await rqst.put(`/api/comments/update`).send({
-      id: comments.body.blog.comments[0]._id,
+      id: comments.body[0].comments[0]._id,
       description: "Comment test edited",
     });
 
@@ -451,33 +497,14 @@ describe("-----Blogs------", async function () {
 
   // Delete  a comment  Doest exist
 
-  it("/PUT blog comment  204", async () => {
-
-    do{
-      await rqst.post(`/api/comments/add/${blogId}`).send({
-        names: "Anathole test",
-        email: "aimeanathole@example.com",
-        description: "Comment test",
-      });
-    }
-
-    while(comments.body.blog.comments.length == 0){
-      await rqst.post(`/api/comments/add/${blogId}`).send({
-        names: "Anathole test",
-        email: "aimeanathole@example.com",
-        description: "Comment test",
-      });
-
-      comments = await rqst.get(`/api/comments/all/${blogId}`);
-    }
+  it("/DELETE blog comment  204", async () => {
 
     const response = await rqst.delete(`/api/comments/delete`).send({
-      id: newBlog.blog.comments[0]._id,
+      id: '63d9cc7d5edb78550c1473cf',
     });
 
     expect(response.status).to.eql(204);
     expect(response.body).to.be.an("Object");
-    expect(response.body).to.have.property("message");
   });
 
   // delete comment

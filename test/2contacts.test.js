@@ -160,6 +160,7 @@ describe("-----CONTACTS------", async function () {
       token: `Bearer ${token}`,
     });
     expect(response.status).to.eql(204);
+    expect(response.body).to.be.an("object");
   });
 
   //  delete Contact and user authenicated and success fully deleted(200)
@@ -215,6 +216,7 @@ describe("-----CONTACTS------", async function () {
         token: `Bearer ${token}`,
       });
     expect(response.status).to.eql(200);
+    expect(response.body).to.be.an("object");
     expect(response.body).to.have.property("message");
 
   });
@@ -225,10 +227,11 @@ describe("-----CONTACTS------", async function () {
       token: `Bearer ${token}`,
     });
     expect(response.status).to.eql(404);
+    expect(response.body).to.be.an("object");
   });
 
   // GET contacts -> returns all contacts (422)
-  it(" /GET a contact qith Id of bad format i.e : fhsjfdhfksjdhfkdsjfhksdhfksdhfkdf", async function () {
+  it(" /GET a contact qith Id of bad format i.e : fhsjfdhfksjdhfkdsjhfksdhfkdf", async () => {
     const response = await rqst
       .get(`/api/contacts/fhsjfdhfksjdhfkdsjfhksdhfksdhfkdf`)
       .set({

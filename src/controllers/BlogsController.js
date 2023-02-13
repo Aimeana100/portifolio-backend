@@ -91,7 +91,7 @@ const updateBlog = async (req, res) => {
   if (req.body?.status) blog.status = req.body.status === "muted" ? "unmuted" : "muted";
 
   if (req.file) {
-    console.log(req.file)
+    // console.log(req.file)
     const imgResult = await cloudinary.uploader.upload(req.file.path);
     blog.image = {
       url: imgResult.secure_url,
@@ -120,13 +120,10 @@ const deleteBlog = async (req, res) => {
       .json({ message: `No blog matches ID ${req.body.id}.` });
   }
   const result = await blog.deleteOne();
-  res.status(200).json(result);
+  res.status(200).json({result, message: 'Blog deleted successfully'});
 };
 
 const getBlog = async (req, res) => {
-  if (!req?.params?.id) {
-    return res.status(400).json({ message: "Blog ID required." });
-  }
 
   if (!ObjectId.isValid(req.params.id)) {
     return res
