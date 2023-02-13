@@ -8,7 +8,9 @@
     "start": "node dist/index.js",
     "dev": "npm run build && nodemon --exec babel-node src/index.js",
     "test": "NODE_ENV=test nyc --reporter=text --reporter=html --reporter=json-summary mocha --recursive --exit --timeout 2000000 --require @babel/register test/*.test.js",
-    "coverage": "nyc --reporter=html --report-dir=coverage/ npm run test"
+    "coverage": "nyc --reporter=html --report-dir=coverage/ npm run test",
+    "coverage:badge": "coverage-badge-creator"
+
   },
   "repository": {
     "type": "git",
@@ -42,6 +44,7 @@
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
     "check-code-coverage": "^1.10.4",
+    "coverage-badge-creator": "^1.0.17",
     "coveralls": "^3.1.1",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
