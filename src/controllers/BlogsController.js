@@ -124,7 +124,6 @@ const deleteBlog = async (req, res) => {
 };
 
 const getBlog = async (req, res) => {
-
   if (!ObjectId.isValid(req.params.id)) {
     return res
       .status(422)

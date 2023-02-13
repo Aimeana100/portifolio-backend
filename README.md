@@ -13,6 +13,8 @@
 ![AppVeyor tests](https://img.shields.io/appveyor/tests/Aimeana100/portifolio-backend)
 
 
+[![CI/CD](https://github.com/Aimeana100/portifolio-backend/actions/workflows/node.js.yml/badge.svg)](https://github.com/Aimeana100/portifolio-backend/actions/workflows/node.js.yml)
+
 
 <!-- PROJECT LOGO and Intro -->
 <br />
@@ -20,7 +22,6 @@
   ## Intoroduction 
  <br>
 </div>
-
 
 - Portifolio backend REST API documentation , this is a project of my brand project, that is deployed on Repository <a href="https://github.com/Aimeana100/portifolio" target="_blank" > Front-End git </a> and front-end design are deployed on github page <a href="https://github.com" target="_blank" > Fron-end Pages </a>.
 

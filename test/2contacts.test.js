@@ -144,7 +144,7 @@ describe("-----CONTACTS------", async function () {
       });
     expect(response.status).to.eql(204);
   });
-
+  
   //  get Contact and user authenicated but Id not found (204)
   it("/GET Contact and user authenticated but Id not available in the array  (204)  ", async function () {
     const newContact = await rqst.post("/api/contacts/add").send({
