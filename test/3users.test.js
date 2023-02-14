@@ -18,7 +18,7 @@ let allUsers ;
 
 describe("----- USER LOGIN and REGISTER ------", async function () {
   before(async (done) => {
-    await User.deleteOne({}, done());
+    await User.deleteMany({}, done());
   });
 
   // afterEach(async (done) => {

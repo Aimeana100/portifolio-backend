@@ -19,7 +19,7 @@ describe("----- BLOG CATEGORY ------", async function () {
   let token;
 
   before(async (done) => {
-    await Category.deleteOne({}, done());
+    await Category.deleteMany({}, done());
   });
 
   rqst;

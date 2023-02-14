@@ -16,7 +16,7 @@ let allContacts;
 
 describe("-----CONTACTS------", async function () {
   before(async (done) => {
-    await Contact.deleteOne({}, done());
+    await Contact.deleteMany({}, done());
   });
 
 

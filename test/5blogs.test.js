@@ -24,7 +24,7 @@ let comments
 
 describe("-----Blogs------", async function () {
   before(async (done) => {
-    await Blog.deleteOne({}, done());
+    await Blog.deleteMany({}, done());
   });
 
   // afterEach(async (done) => {
