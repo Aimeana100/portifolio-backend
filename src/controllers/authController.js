@@ -2,6 +2,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
+import dotenv from 'dotenv'
+dotenv.config()
+
 const handleLogin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -46,7 +49,7 @@ const handleLogin = async (req, res) => {
     });
 
     // Send authorization roles and access token to user
-    return res.status(200).json({ roles, accessToken, message: 'Loggin succesfull' });
+    return res.status(200).json({ roles,foundUser, accessToken, message: 'Loggin succesfull' });
   }
   return res.status(401).json({ message: 'Login failed' });
 };
