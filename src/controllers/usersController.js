@@ -9,18 +9,6 @@ const getAllUsers = async (req, res) => {
   res.status(200).json(users);
 };
 
-const deleteUser = async (req, res) => {
-  if (!req.body.id) return res.status(400).json({ message: 'User ID is required.' });
-  const user = await User.findOne({ _id: req.body.id }).exec();
-
-  if (!user) {
-    return res.status(204).json({ message: `User with id : ${req.body.id} does not exist` });
-  }
-  const result = await User.deleteOne({ _id: req.body.id }).exec();
-
-  res.status(200).json({result, message: 'Deleted successfully'});
-};
-
 const getUser = async (req, res) => {
 
   if (!ObjectId.isValid(req.params.id))  {
@@ -38,6 +26,5 @@ const getUser = async (req, res) => {
 
 export default {
   getAllUsers,
-  deleteUser,
   getUser,
 };

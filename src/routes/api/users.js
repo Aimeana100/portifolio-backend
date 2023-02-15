@@ -6,8 +6,6 @@ import usersController from '../../controllers/usersController';
 const router = express.Router();
 
 router.route('/all').get(verfyJWT, usersController.getAllUsers)
-router.route('/delete').delete(verfyJWT, usersController.deleteUser);
-
 router.route('/:id')
   .get(verfyJWT, usersController.getUser);
 

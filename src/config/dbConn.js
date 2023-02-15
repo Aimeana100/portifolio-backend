@@ -4,7 +4,7 @@ dotenv.config();
 
 const {DATABASE_URI, DATABASE_URI_TEST, NODE_ENV} = process.env;
 
-console.log(NODE_ENV==='test');
+console.log(NODE_ENV==='test' ? 'testing' : 'production');
 
 const connectDB = async () => {
     try {
