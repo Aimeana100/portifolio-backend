@@ -1,5 +1,5 @@
 {
-  "name": "E-voting",
+  "name": "portfolio-backend",
   "version": "1.0.0",
   "description": "this is backend for my capstone project, this will allow visitors to reach me, it is a RESTfull API",
   "main": "index.js",
