@@ -128,13 +128,13 @@ router.get('/ussd/report', async (req, res) => {
 
     let obj = {};
 
-    for (let i = 0; i < positions.length; i++){
-        const result = await Votes.find({
-            $where: {
-                
-            }
-        })
-    } 
+    // for (let i = 0; i < positions.length; i++){
+    //     const result = await Votes.find({
+    //         position: positions[i].id
+    //     })
+    //     result[positions[i].name] = result.length
+    // } 
+    return res.status(200).json({data: await Votes.find()})
 });
 
 module.exports = router;
