@@ -14,4 +14,4 @@ const Position = new Schema({
   },
 });
 
-export default mongoose.model('Category', Position);
+export default mongoose.model('Position', Position);
