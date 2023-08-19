@@ -66,14 +66,14 @@ router.post('/ussd', (req, res) => {
             response += `\n ${i + 1}. ${positions[i].name}`;
         }
     } else if (text == '1') {
-        response += `Vote for you president`;
+        response += `CON Vote for you president`;
 
         for (let i = 0; i < positions[0].candidates.length; i++) {
             response += `\n ${i + 1}. ${positions[0].candidates[i].name}`;
         }
 
     } else if (text == '2') {
-        response += `Vote for your senate`;
+        response += `CON Vote for your senate`;
 
         for (let i = 0; i < positions[1].candidates.length; i++) {
             response += `\n ${i + 1} .${positions[1].candidates[i].name}`;
@@ -128,13 +128,13 @@ router.get('/ussd/report', async (req, res) => {
 
     let obj = {};
 
-    for (let i = 0; i < positions.length; i++){
-        const result = await Votes.find({
-            $where: {
-                
-            }
-        })
-    } 
+    // for (let i = 0; i < positions.length; i++){
+    //     const result = await Votes.find({
+    //         position: positions[i].id
+    //     })
+    //     result[positions[i].name] = result.length
+    // } 
+    return res.status(200).json({data: await Votes.find()})
 });
 
 module.exports = router;
