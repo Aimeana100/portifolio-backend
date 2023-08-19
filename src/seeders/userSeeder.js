@@ -2,7 +2,7 @@ const userSeeder = {
 
 
   signUp: {
-    names: "Anathole K",
+    names: "Cand",
     password: "1234",
     email: "test@gmail.com",
     roles: "user",
